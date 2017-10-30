@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper" v-loading="loading">
     <div class="login-form" v-bind:class="{ hidden: hideLoginForm }">
       <span>Cần đăng nhập để sử dụng</span>
       <el-button type="primary" @click="login">Đăng nhập với Facebook</el-button>
@@ -16,7 +16,8 @@
     name: 'Login',
     data () {
       return {
-        hideLoginForm: true
+        hideLoginForm: true,
+        loading: true
       }
     },
     methods: {
@@ -28,29 +29,30 @@
         const response = await fbLogin()
         if (response !== undefined) {
           const [accessToken, userID] = response
-          this.saveUserCredentials({ token: accessToken, userID })
-          const success = await sendCredentials(accessToken, userID)
-          this.handleCredentialsSending(success)
+          const shopToken = await sendCredentials(accessToken, userID)
+          this.handleCredentialsSending(shopToken)
         }
       },
-      handleCredentialsSending (success) {
-        if (success) {
+      handleCredentialsSending (shopToken) {
+        if (shopToken !== undefined) {
+          this.saveUserCredentials({ token: shopToken })
           this.$router.push({name: 'Admin'})
         } else {
           this.clearUserCredentials()
           this.hideLoginForm = false
+          this.loading = false
         }
       }
     },
-    created () {
+    mounted () {
       checkLoginStatus().then(response => {
         if (response !== undefined) {
           const [accessToken, userID] = response
-          this.saveUserCredentials({ token: accessToken, userID })
           sendCredentials(accessToken, userID).then(this.handleCredentialsSending)
         } else {
           this.clearUserCredentials()
           this.hideLoginForm = false
+          this.loading = false
         }
       })
     }
@@ -64,5 +66,9 @@
 
   .hidden {
     display: none;
+  }
+
+  .wrapper {
+    height: 100vh
   }
 </style>

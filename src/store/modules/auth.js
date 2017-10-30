@@ -1,17 +1,16 @@
 import { CLEAR_USER_CREDENTIALS, SAVE_USER_CREDENTIALS } from '../mutation-types'
 
 const state = {
-  token: undefined,
-  userID: undefined
+  shopToken: undefined
 }
 
 const getters = {
-  isLoggedIn: state => state.token !== undefined
+  isLoggedIn: state => state.shopToken !== undefined
 }
 
 const actions = {
-  saveUserCredentials ({ commit }, { token, userID }) {
-    commit(SAVE_USER_CREDENTIALS, { token, userID })
+  saveUserCredentials ({ commit }, { token }) {
+    commit(SAVE_USER_CREDENTIALS, { token })
   },
 
   clearUserCredentials ({ commit }) {
@@ -20,16 +19,14 @@ const actions = {
 }
 
 const mutations = {
-  [SAVE_USER_CREDENTIALS] (state, { token, userID }) {
-    if (state.token !== token) {
-      state.token = token
-      state.userID = userID
+  [SAVE_USER_CREDENTIALS] (state, { token }) {
+    if (state.shopToken !== token) {
+      state.shopToken = token
     }
   },
 
   [CLEAR_USER_CREDENTIALS] (state) {
-    state.token = undefined
-    state.userID = undefined
+    state.shopToken = undefined
   }
 }
 
