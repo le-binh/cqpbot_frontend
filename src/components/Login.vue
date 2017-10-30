@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="login-form" v-bind:class="{ hidden: hideLoginForm }">
-      <span>Cần đăng nhập để sử </span>
-      <button @click="login" class="signin-button" >Đăng nhập với Facebook</button>
+      <span>Cần đăng nhập để sử dụng</span>
+      <el-button type="primary" @click="login">Đăng nhập với Facebook</el-button>
     </div>
   </div>
 </template>
@@ -58,17 +58,6 @@
 </script>
 
 <style scoped>
-  .signin-button {
-    display: inline-block;
-    padding: 4px 8px;
-    background-color: #3c82f7;
-    color: #fff;
-    border: 0;
-    box-shadow:none;
-    border-radius: 0px;
-    cursor: pointer;
-  }
-
   .login-form {
     display: block;
   }

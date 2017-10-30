@@ -1,21 +1,27 @@
 <template>
   <div class="wrapper">
-    <span class="welcome-msg">Chào mừng đến với ứng dụng Autobot</span>
-    <router-link to="/login">Sử dụng ngay</router-link>
+    <span>Chào mừng đến với ứng dụng Autobot</span>
+    <el-button type="primary" @click="startUsingApp">Sử dụng ứng dụng ngay</el-button>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'Home'
-}
+  export default {
+    name: 'Home',
+    methods: {
+      startUsingApp () {
+        this.$router.push({ name: 'Login' })
+      }
+    }
+  }
 </script>
 
 <style scoped>
   .wrapper {
     align-content: center;
   }
-  .welcome-msg {
-    display: block;
+
+  .el-row {
+    margin-bottom: 20px;
   }
 </style>
