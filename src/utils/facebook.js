@@ -8,7 +8,7 @@ const getUserCredentials = response => {
   }
 }
 
-export const checkLoginStatus = async () => {
+export const checkLoginStatus = () => {
   return new Promise(resolve => {
     FB.getLoginStatus(response => {
       resolve(getUserCredentials(response))
@@ -16,7 +16,7 @@ export const checkLoginStatus = async () => {
   })
 }
 
-export const fbLogin = async () => {
+export const fbLogin = () => {
   return new Promise(resolve => {
     FB.login(response => {
       resolve(getUserCredentials(response))

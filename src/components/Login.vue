@@ -26,12 +26,12 @@
         'clearUserCredentials'
       ]),
       login: async function () {
-        const response = await fbLogin()
-        if (response !== undefined) {
-          const [accessToken, userID] = response
-          const shopToken = await sendCredentials(accessToken, userID)
-          this.handleCredentialsSending(shopToken)
-        }
+        fbLogin().then(response => {
+          if (response !== undefined) {
+            const [accessToken, userID] = response
+            sendCredentials(accessToken, userID).then(this.handleCredentialsSending)
+          }
+        })
       },
       handleCredentialsSending (shopToken) {
         if (shopToken !== undefined) {
