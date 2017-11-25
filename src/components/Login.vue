@@ -42,19 +42,28 @@
           this.hideLoginForm = false
           this.loading = false
         }
+      },
+      waitForFBToCheckLoginStatus () {
+        if (isFBLoaded) {
+          checkLoginStatus().then(response => {
+            if (response !== undefined) {
+              const [accessToken, userID] = response
+              sendCredentials(accessToken, userID).then(this.handleCredentialsSending)
+            } else {
+              this.clearUserCredentials()
+              this.hideLoginForm = false
+              this.loading = false
+            }
+          })
+        } else {
+          setTimeout(() => {
+            this.waitForFBToCheckLoginStatus()
+          }, 500)
+        }
       }
     },
     mounted () {
-      checkLoginStatus().then(response => {
-        if (response !== undefined) {
-          const [accessToken, userID] = response
-          sendCredentials(accessToken, userID).then(this.handleCredentialsSending)
-        } else {
-          this.clearUserCredentials()
-          this.hideLoginForm = false
-          this.loading = false
-        }
-      })
+      this.waitForFBToCheckLoginStatus()
     }
   }
 </script>

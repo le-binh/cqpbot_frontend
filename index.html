@@ -5,6 +5,7 @@
     <title>cqbbot</title>
 
     <script>
+      let isFBLoaded = false;
       window.fbAsyncInit = function() {
         FB.init({
           appId: '266315007223047',
@@ -13,6 +14,7 @@
           version: 'v2.10'
         });
 
+        isFBLoaded = true;
         FB.AppEvents.logPageView();
 
       };
