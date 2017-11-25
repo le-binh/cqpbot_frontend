@@ -17,6 +17,8 @@
   .content {
     vertical-align: top;
     display: inline-block;
+    width: calc(100% - 170px);
+    margin-left: 16px;
   }
 </style>
 
