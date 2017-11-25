@@ -36,7 +36,7 @@
       handleCredentialsSending (shopToken) {
         if (shopToken !== undefined) {
           this.saveUserCredentials({ token: shopToken })
-          this.$router.push({name: 'Admin'})
+          this.$router.push({name: 'Campaign'})
         } else {
           this.clearUserCredentials()
           this.hideLoginForm = false

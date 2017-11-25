@@ -2,7 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 
-import { Button, Row, Col, Card, Loading } from 'element-ui'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
 import App from './App'
 import router from './router'
@@ -10,11 +11,7 @@ import store from './store'
 
 Vue.config.productionTip = false
 
-Vue.use(Button)
-Vue.use(Row)
-Vue.use(Col)
-Vue.use(Card)
-Vue.use(Loading)
+Vue.use(ElementUI)
 
 /* eslint-disable no-new */
 new Vue({
