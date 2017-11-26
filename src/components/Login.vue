@@ -25,7 +25,7 @@
         'saveUserCredentials',
         'clearUserCredentials'
       ]),
-      login: async function () {
+      login: function () {
         fbLogin().then(response => {
           if (response !== undefined) {
             const [accessToken, userID] = response

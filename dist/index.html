@@ -1,4 +1,5 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><title>cqbbot</title><script>window.fbAsyncInit = function() {
+<!DOCTYPE html><html><head><meta charset=utf-8><title>cqbbot</title><script>let isFBLoaded = false;
+      window.fbAsyncInit = function() {
         FB.init({
           appId: '266315007223047',
           cookie: true,
@@ -6,6 +7,7 @@
           version: 'v2.10'
         });
 
+        isFBLoaded = true;
         FB.AppEvents.logPageView();
 
       };
@@ -16,4 +18,4 @@
         js = d.createElement(s); js.id = id;
         js.src = "https://connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));</script><link href=/static/css/app.5be80a7c1c9265c8df933e2819721d14.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=/static/js/manifest.a45929e5f63411bd03f7.js></script><script type=text/javascript src=/static/js/vendor.8195ae4425098b774748.js></script><script type=text/javascript src=/static/js/app.c129925643526b56c52e.js></script></body></html>
+      }(document, 'script', 'facebook-jssdk'));</script><link href=/static/css/app.5be80a7c1c9265c8df933e2819721d14.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=/static/js/manifest.293fc40374169e3c7962.js></script><script type=text/javascript src=/static/js/vendor.8195ae4425098b774748.js></script><script type=text/javascript src=/static/js/app.6efdc86e7d87feb5548a.js></script></body></html>
