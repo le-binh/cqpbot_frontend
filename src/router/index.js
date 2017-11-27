@@ -17,12 +17,13 @@ const router = new Router({
     { path: '/', name: 'Home', component: Home },
     { path: '/admin',
       component: Admin,
+      meta: { requiresAuth: true },
       children: [
-        { path: '', name: 'Campaign', component: Campaign },
-        { path: 'training', component: Training },
-        { path: 'new-arrival', component: NewArrival },
-        { path: 'customer', component: Customer },
-        { path: 'customer-group', component: CustomerGroup }
+        { path: '', name: 'Campaign', component: Campaign, meta: { requiresAuth: true } },
+        { path: 'training', component: Training, meta: { requiresAuth: true } },
+        { path: 'new-arrival', component: NewArrival, meta: { requiresAuth: true } },
+        { path: 'customer', component: Customer, meta: { requiresAuth: true } },
+        { path: 'customer-group', component: CustomerGroup, meta: { requiresAuth: true } }
       ]
     },
     { path: '/login', name: 'Login', component: Login }
@@ -31,15 +32,15 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path.startsWith('/admin/')) {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters.isLoggedIn) {
       next()
     } else {
-      router.push({name: 'Login'})
-      return
+      next({ path: '/login', query: { redirect: to.fullPath } })
     }
+  } else {
+    next()
   }
-  next()
 })
 
 export default router
