@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
-    <span>Chào mừng đến với ứng dụng Autobot</span>
-    <el-button type="primary" @click="startUsingApp">Sử dụng ứng dụng ngay</el-button>
+    <span class="welcome-title">Chào mừng đến với ứng dụng Autobot</span>
+    <el-button class="use-app-button" type="primary" @click="startUsingApp">Sử dụng ứng dụng ngay</el-button>
   </div>
 </template>
 
@@ -18,10 +18,19 @@
 
 <style scoped>
   .wrapper {
-    align-content: center;
+    margin-top: calc(50vh - 51px);
   }
 
-  .el-row {
-    margin-bottom: 20px;
+  .welcome-title {
+    display: block;
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 40px;
+  }
+
+  .use-app-button {
+    display: block;
+    margin: auto;
+    font-size: 20px;
   }
 </style>

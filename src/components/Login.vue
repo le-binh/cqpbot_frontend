@@ -1,64 +1,45 @@
 <template>
   <div class="wrapper" v-loading="loading">
     <div class="login-form" v-bind:class="{ hidden: hideLoginForm }">
-      <span>Cần đăng nhập để sử dụng</span>
-      <el-button type="primary" @click="login">Đăng nhập với Facebook</el-button>
+      <span class="login-title">Cần đăng nhập để sử dụng</span>
+      <el-button class="login-button" type="primary" @click="loginClicked">Đăng nhập với Facebook</el-button>
     </div>
   </div>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import { fbLogin, checkLoginStatus } from '../utils/facebook'
-  import { sendCredentials } from '../apis/auth'
+  import { mapActions, mapState, mapGetters } from 'vuex'
 
   export default {
     name: 'Login',
-    data () {
-      return {
-        hideLoginForm: true,
-        loading: true
-      }
+    computed: {
+      ...mapGetters({
+        loading: 'loading'
+      }),
+      ...mapState({
+        hideLoginForm: state => state.auth.checkingLoginStatus
+      })
     },
     methods: {
       ...mapActions([
-        'saveUserCredentials',
-        'clearUserCredentials'
+        'checkLoginStatus',
+        'login'
       ]),
-      login: function () {
-        fbLogin().then(response => {
-          if (response !== undefined) {
-            const [accessToken, userID] = response
-            sendCredentials(accessToken, userID).then(this.handleCredentialsSending)
-          }
-        })
-      },
-      handleCredentialsSending (shopToken) {
-        if (shopToken !== undefined) {
-          this.saveUserCredentials({ token: shopToken })
-          this.$router.push({path: this.$route.query.redirect || '/admin'})
-        } else {
-          this.clearUserCredentials()
-          this.hideLoginForm = false
-          this.loading = false
-        }
+      loginClicked () {
+        this.login().then(this.redirectOrShowError)
       },
       waitForFBToCheckLoginStatus () {
         if (isFBLoaded) {
-          checkLoginStatus().then(response => {
-            if (response !== undefined) {
-              const [accessToken, userID] = response
-              sendCredentials(accessToken, userID).then(this.handleCredentialsSending)
-            } else {
-              this.clearUserCredentials()
-              this.hideLoginForm = false
-              this.loading = false
-            }
-          })
+          this.checkLoginStatus().then(this.redirectOrShowError)
         } else {
           setTimeout(() => {
             this.waitForFBToCheckLoginStatus()
           }, 500)
+        }
+      },
+      redirectOrShowError (success) {
+        if (success) {
+          this.$router.push({path: this.$route.query.redirect || '/my_pages'})
         }
       }
     },
@@ -71,6 +52,7 @@
 <style scoped>
   .login-form {
     display: block;
+    margin-top: calc(50vh - 51px);
   }
 
   .hidden {
@@ -79,5 +61,18 @@
 
   .wrapper {
     height: 100vh
+  }
+
+  .login-title {
+    display: block;
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 40px;
+  }
+
+  .login-button {
+    display: block;
+    margin: auto;
+    font-size: 20px;
   }
 </style>

@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import Admin from '@/components/Admin'
+import PageDetail from '@/components/PageDetail'
 import Login from '@/components/Login'
 import Campaign from '@/components/Campaign'
 import Training from '@/components/Training'
 import NewArrival from '@/components/NewArrival'
 import Customer from '@/components/Customer'
 import CustomerGroup from '@/components/CustomerGroup'
+import MyPages from '@/components/MyPages'
 import store from '../store'
 
 Vue.use(Router)
@@ -15,8 +16,10 @@ Vue.use(Router)
 const router = new Router({
   routes: [
     { path: '/', name: 'Home', component: Home },
-    { path: '/admin',
-      component: Admin,
+    { path: '/login', name: 'Login', component: Login },
+    { path: '/my_pages', name: 'My-Pages', component: MyPages, meta: { requiresAuth: true } },
+    { path: '/my_pages/:id',
+      component: PageDetail,
       meta: { requiresAuth: true },
       children: [
         { path: '', name: 'Campaign', component: Campaign, meta: { requiresAuth: true } },
@@ -25,8 +28,7 @@ const router = new Router({
         { path: 'customer', component: Customer, meta: { requiresAuth: true } },
         { path: 'customer-group', component: CustomerGroup, meta: { requiresAuth: true } }
       ]
-    },
-    { path: '/login', name: 'Login', component: Login }
+    }
   ],
   mode: 'history'
 })

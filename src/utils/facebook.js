@@ -8,7 +8,7 @@ const getUserCredentials = response => {
   }
 }
 
-export const checkLoginStatus = () => {
+export const fbCheckLoginStatus = () => {
   return new Promise(resolve => {
     FB.getLoginStatus(response => {
       resolve(getUserCredentials(response))
@@ -20,6 +20,6 @@ export const fbLogin = () => {
   return new Promise(resolve => {
     FB.login(response => {
       resolve(getUserCredentials(response))
-    }, {scope: 'public_profile,email'})
+    }, {scope: 'public_profile,email,manage_pages'})
   })
 }
