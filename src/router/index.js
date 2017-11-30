@@ -9,6 +9,7 @@ import NewArrival from '@/components/NewArrival'
 import Customer from '@/components/Customer'
 import CustomerGroup from '@/components/CustomerGroup'
 import MyPages from '@/components/MyPages'
+import CampaignDetail from '@/components/CampaignDetail'
 import store from '../store'
 
 Vue.use(Router)
@@ -17,16 +18,41 @@ const router = new Router({
   routes: [
     { path: '/', name: 'Home', component: Home },
     { path: '/login', name: 'Login', component: Login },
-    { path: '/my_pages', name: 'My-Pages', component: MyPages, meta: { requiresAuth: true } },
-    { path: '/my_pages/:id',
+    { path: '/pages', name: 'MyPages', component: MyPages, meta: { requiresAuth: true } },
+    {
+      path: '/pages/:id/campaigns',
       component: PageDetail,
-      meta: { requiresAuth: true },
       children: [
         { path: '', name: 'Campaign', component: Campaign, meta: { requiresAuth: true } },
-        { path: 'training', component: Training, meta: { requiresAuth: true } },
-        { path: 'new-arrival', component: NewArrival, meta: { requiresAuth: true } },
-        { path: 'customer', component: Customer, meta: { requiresAuth: true } },
-        { path: 'customer-group', component: CustomerGroup, meta: { requiresAuth: true } }
+        { path: '/pages/:id/campaigns/:campaign_id', name: 'CampaignDetail', component: CampaignDetail, meta: { requiresAuth: true } }
+      ]
+    },
+    {
+      path: '/pages/:id/training',
+      component: PageDetail,
+      children: [
+        { path: '', name: 'Training', component: Training, meta: { requiresAuth: true } }
+      ]
+    },
+    {
+      path: '/pages/:id/new-arrival',
+      component: PageDetail,
+      children: [
+        { path: '', name: 'NewArrival', component: NewArrival, meta: { requiresAuth: true } }
+      ]
+    },
+    {
+      path: '/pages/:id/customer',
+      component: PageDetail,
+      children: [
+        { path: '', name: 'Customer', component: Customer, meta: { requiresAuth: true } }
+      ]
+    },
+    {
+      path: '/pages/:id/customer-group',
+      component: PageDetail,
+      children: [
+        { path: '', name: 'CustomerGroup', component: CustomerGroup, meta: { requiresAuth: true } }
       ]
     }
   ],

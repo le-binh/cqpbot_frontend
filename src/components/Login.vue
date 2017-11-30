@@ -39,7 +39,7 @@
       },
       redirectOrShowError (success) {
         if (success) {
-          this.$router.push({path: this.$route.query.redirect || '/my_pages'})
+          this.$router.push({path: this.$route.query.redirect || '/pages'})
         }
       }
     },
@@ -60,7 +60,9 @@
   }
 
   .wrapper {
-    height: 100%
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
   }
 
   .login-title {

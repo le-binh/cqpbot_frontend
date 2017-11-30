@@ -10,7 +10,7 @@
     name: 'Home',
     methods: {
       startUsingApp () {
-        this.$router.push({ name: 'Login' })
+        this.$router.push({ path: '/login' })
       }
     }
   }
