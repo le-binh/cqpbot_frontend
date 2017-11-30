@@ -60,7 +60,7 @@
   }
 
   .wrapper {
-    height: 100vh
+    height: 100%
   }
 
   .login-title {
