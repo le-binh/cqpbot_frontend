@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" stripe style="width: 100%" @row-click="handleRowClicked" row-style="cursor: pointer">
+  <el-table :data="tableData" stripe style="width: 100%" @row-click="handleRowClicked" :row-style="{cursor: 'pointer'}">
     <el-table-column prop="name" label="Tên chiến dịch" width="250"></el-table-column>
     <el-table-column prop="type" label="Loại" width="150"></el-table-column>
     <el-table-column prop="total" label="Số lượng"></el-table-column>

@@ -11,7 +11,7 @@
     name: 'PageDetailSideBar',
     components: { SideBar },
     data () {
-      const id = this.$router.currentRoute.params.id
+      const id = this.$route.params.id
       return {
         links: [
           { path: `/pages/${id}/campaigns/`, icon: 'el-menu-icon', title: 'Chiến dịch' },
@@ -23,10 +23,20 @@
         activePath: `/pages/${id}/campaigns/`
       }
     },
+    methods: {
+      getActivePath: function () {
+        const path = this.$route.fullPath
+        for (let i in this.links) {
+          const link = this.links[i]
+          if (path.includes(link.path)) {
+            return link.path
+          }
+        }
+        return this.activePath
+      }
+    },
     mounted () {
-      console.log(this.$router.currentRoute)
-      console.log(this.$route)
-      this.activePath = this.$router.currentRoute.fullPath
+      this.activePath = this.getActivePath()
     }
   }
 </script>
