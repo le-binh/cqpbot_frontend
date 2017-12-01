@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="wrapper" v-loading="loading">
     <div>
       <el-table
-        :data="tableData"
+        :data="customerGroups"
         stripe style="width: 100%"
         @row-click="handleRowClicked"
         :row-style="{cursor: 'pointer'}"
@@ -36,32 +36,27 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions, mapState } from 'vuex'
+
   export default {
-    data () {
-      return {
-        tableData: [{
-          groupName: 'Beautiful girl',
-          customerName: 'chứa: Ngọc Trinh ',
-          gender: 'Nữ',
-          like: '= 100',
-          comments: '> 5',
-          inbox: '< 100',
-          lastInteraction: '= 3 ngày'
-        }, {
-          groupName: 'Beautiful girl',
-          customerName: 'chứa: Nguyễn Khánh Linh',
-          gender: 'Nữ',
-          like: '< 100',
-          comments: '',
-          inbox: '',
-          lastInteraction: '>= 3 ngày'
-        }]
-      }
+    computed: {
+      ...mapGetters({
+        customerGroups: 'customerGroups'
+      }),
+      ...mapState({
+        loading: state => state.customerGroup.loading
+      })
     },
     methods: {
+      ...mapActions([
+        'getAllCustomerGroups'
+      ]),
       handleRowClicked: function (row) {
         console.log(`Clicked row ${row}`)
       }
+    },
+    created () {
+      this.getAllCustomerGroups()
     }
   }
 </script>
@@ -70,5 +65,10 @@
   .pagination {
     text-align: center;
     margin-top: 16px;
+  }
+
+  .wrapper {
+    height: 100vh;
+    margin: auto;
   }
 </style>
