@@ -1,12 +1,18 @@
 <template>
-  <el-table :data="tableData" stripe style="width: 100%" @row-click="handleRowClicked" :row-style="{cursor: 'pointer'}">
-    <el-table-column prop="name" label="Tên chiến dịch" width="250"></el-table-column>
-    <el-table-column prop="type" label="Loại" width="150"></el-table-column>
-    <el-table-column prop="total" label="Số lượng"></el-table-column>
-    <el-table-column prop="sent" label="Đã gửi"></el-table-column>
-    <el-table-column prop="read" label="Đã đọc"></el-table-column>
-    <el-table-column prop="clicked" label="Đã click"></el-table-column>
-    <el-table-column prop="interacted" label="Đã tương tác"></el-table-column>
+  <el-table
+    :data="tableData"
+    stripe style="width: 100%"
+    @row-click="handleRowClicked"
+    :row-style="{cursor: 'pointer'}"
+    :default-sort = "{prop: 'date', order: 'descending'}"
+  >
+    <el-table-column prop="name" label="Tên chiến dịch" width="250" sortable></el-table-column>
+    <el-table-column prop="type" label="Loại" width="150" sortable></el-table-column>
+    <el-table-column prop="total" label="Số lượng" sortable></el-table-column>
+    <el-table-column prop="sent" label="Đã gửi" sortable></el-table-column>
+    <el-table-column prop="read" label="Đã đọc" sortable></el-table-column>
+    <el-table-column prop="clicked" label="Đã click" sortable></el-table-column>
+    <el-table-column prop="interacted" label="Đã tương tác" sortable></el-table-column>
   </el-table>
 </template>
 

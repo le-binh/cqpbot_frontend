@@ -8,6 +8,7 @@ export const sendCredentials = async (token, userID) => {
       fbAppId: userID
     })
     const responseData = response.data
+    console.log(responseData.data)
     if (responseData.meta.success) {
       return responseData.data.token
     }
