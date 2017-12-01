@@ -7,6 +7,7 @@
         @row-click="handleRowClicked"
         :row-style="{cursor: 'pointer'}"
         :default-sort = "{prop: 'date', order: 'descending'}"
+        empty-text="Chưa có dữ liệu"
       >
         <el-table-column prop="groupName" label="Tên Nhóm" sortable fixed width="200"></el-table-column>
         <el-table-column prop="customerName" label="Tên KH" sortable width="200"></el-table-column>
