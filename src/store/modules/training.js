@@ -1,11 +1,19 @@
 import { SAVE_NEW_INBOX } from '../mutation-types'
 
+const dummyConfusingQuestions = [
+  { id: 1, question: 'Foo Bar' },
+  { id: 2, question: 'Foo Bar' },
+  { id: 3, question: 'Foo Bar' }
+]
+
 const state = {
-  inboxes: []
+  inboxes: [],
+  confusingQuestions: [...dummyConfusingQuestions]
 }
 
 const getters = {
-  inboxes: state => state.inboxes
+  inboxes: state => state.inboxes,
+  confusingQuestions: state => state.confusingQuestions
 }
 
 const actions = {
