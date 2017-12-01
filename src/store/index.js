@@ -5,6 +5,7 @@ import myPages from './modules/my_pages'
 import customer from './modules/customer'
 import campaign from './modules/campaign'
 import customerGroup from './modules/customer-group'
+import training from './modules/training'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     myPages,
     customer,
     campaign,
-    customerGroup
+    customerGroup,
+    training
   }
 })
