@@ -37,17 +37,19 @@
   .status {
     font-size: 22px;
     color: #999;
+    vertical-align: middle;
   }
 
   .bottom {
     margin-top: 13px;
-    line-height: 12px;
+    line-height: 32px;
     width: 100%;
   }
 
   .button {
     padding: 8px 16px;
     margin-left: 50px;
+    vertical-align: middle; 
   }
 
   .image {
@@ -75,5 +77,10 @@
   .name {
     font-size: 30px;
     margin-top: 8px;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    display: block;
+    width: 250px;
+    white-space: nowrap;
   }
 </style>
