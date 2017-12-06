@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  deploy:
+    docker:
+      - image: node:9.2.0
+    working_directory: ~/misena
+    steps:
+      - checkout
+      - run:
+          name: Install pm2
+          command: npm install pm2 -g
+      - run:
+          name: Deploy
+          command: ./deploy_production.sh
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: master

@@ -12,6 +12,7 @@ module.exports = {
       ref: 'origin/master',
       repo: 'git@github.com:le-binh/cqpbot_frontend.git',
       path: '/home/misena/web',
+      'ssh_options': ['StrictHostKeyChecking=no', 'PasswordAuthentication=no'],
       'post-deploy': 'npm install && npm run build && pm2 startOrRestart ecosystem.config.js && source /home/misena/kill8080.sh'
     }
   }
