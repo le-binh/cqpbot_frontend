@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" @click="onViewPageDetail">
+  <div class="wrapper" v-bind:class="{'wrapper-active': page.active}" @click="onViewPageDetail">
     <el-card :body-style="{ padding: '0px'}" class="card">
       <img :src="page.avatar" class="image">
       <div class="right">
@@ -7,7 +7,8 @@
         <div class="bottom">
           <span v-if="page.active" class="status">Đã kích hoạt</span>
           <span v-else class="status">Chưa kích hoạt</span>
-          <el-button type="danger" class="button">Huỷ</el-button>
+          <el-button v-if="page.active" type="danger" class="button" @click="onDeactivatePage">Huỷ</el-button>
+          <el-button v-else type="primary" class="button" @click="onActivatePage">Kích hoạt</el-button>
         </div>
       </div>
     </el-card>
@@ -19,8 +20,17 @@
     name: 'PageItem',
     props: ['page'],
     methods: {
-      onViewPageDetail: function () {
+      onViewPageDetail: function (e) {
         this.$emit('viewPageDetail', this.page._id)
+        e.stopPropagation()
+      },
+      onActivatePage: function (e) {
+        this.$emit('activatePage', this.page._id)
+        e.stopPropagation()
+      },
+      onDeactivatePage: function (e) {
+        this.$emit('deactivatePage', this.page._id)
+        e.stopPropagation()
       }
     }
   }
@@ -32,8 +42,14 @@
     height: 150px;
     display: inline-block;
     align-content: center;
-    cursor: pointer;
+    pointer-events: none;
   }
+
+  .wrapper-active {
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
   .status {
     font-size: 22px;
     color: #999;
@@ -48,8 +64,9 @@
 
   .button {
     padding: 8px 16px;
-    margin-left: 50px;
-    vertical-align: middle; 
+    float: right;
+    vertical-align: middle;
+    pointer-events: auto;
   }
 
   .image {
@@ -82,5 +99,9 @@
     display: block;
     width: 250px;
     white-space: nowrap;
+  }
+
+  .card:hover {
+    background-color: #ecf5ff;
   }
 </style>

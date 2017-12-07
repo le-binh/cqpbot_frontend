@@ -1,7 +1,12 @@
 <template>
   <div class="wrapper" v-loading="loading">
     <span class="title">Danh sách fanpage của tôi</span>
-    <PageItem :page="page" @viewPageDetail="viewPageDetail" v-for="(page, index) in pages" :key="page._id"></PageItem>
+    <PageItem v-for="(page, index) in pages"
+              :page="page" :key="page._id"
+              @viewPageDetail="viewPageDetail"
+              @activatePage="activatePage"
+              @deactivatePage="deactivatePage">
+    </PageItem>
   </div>
 </template>
 
@@ -22,14 +27,16 @@
     },
     methods: {
       ...mapActions([
-        'getAllPages'
+        'getMyPages',
+        'activatePage',
+        'deactivatePage'
       ]),
       viewPageDetail: function (pageId) {
         this.$router.push({name: 'Campaign', params: {id: pageId}})
       }
     },
     created () {
-      this.getAllPages()
+      this.getMyPages()
     }
   }
 </script>

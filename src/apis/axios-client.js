@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosConfig = {
-  baseURL: 'https://dm-autobot.herokuapp.com',
+  baseURL: 'https://dev-api.misena.me',
   timeout: 20000
 }
 
