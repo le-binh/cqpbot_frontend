@@ -100,8 +100,4 @@
     width: 250px;
     white-space: nowrap;
   }
-
-  .card:hover {
-    background-color: #ecf5ff;
-  }
 </style>

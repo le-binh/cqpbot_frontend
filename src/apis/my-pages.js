@@ -23,7 +23,7 @@ const getMyPages = async () => {
 const activatePage = async (pageId) => {
   try {
     const url = ACTIVATE_PAGE_ENDPOINT.replace('pageId', pageId)
-    const response = await axiosClient.put(url, {
+    const response = await axiosClient.put(url, {}, {
       headers: {
         Authorization: `Bearer ${store.state.auth.shopToken}`
       }
