@@ -3,6 +3,7 @@ import { FB_LOGIN_ENDPOINT } from './endpoints'
 
 export const sendCredentials = async (token, userID) => {
   try {
+    console.log(token)
     const response = await axiosClient.post(FB_LOGIN_ENDPOINT, {
       token: token,
       fbAppId: userID

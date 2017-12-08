@@ -1,21 +1,20 @@
 <template>
   <div class="wrapper" v-loading="loading">
     <el-table
-      :data="campaigns"
-      stripe style="width: 100%"
-      @row-click="handleRowClicked"
-      :row-style="{cursor: 'pointer', width: '400px'}"
+      :data="messages"
+      stripe
+      border
+      style="width: 100%"
       :default-sort = "{prop: 'date', order: 'descending'}"
       empty-text="Chưa có dữ liệu"
     >
-      <el-table-column prop="name" label="Tên chiến dịch" width="250" sortable fixed></el-table-column>
-      <el-table-column prop="type" label="Loại" width="150" sortable></el-table-column>
-      <el-table-column prop="total" label="Số lượng" sortable></el-table-column>
+      <el-table-column type="index" width="50"></el-table-column>
+      <el-table-column prop="name" label="Tên chiến dịch" width="350" sortable></el-table-column>
       <el-table-column prop="sent" label="Đã gửi" sortable></el-table-column>
       <el-table-column prop="read" label="Đã đọc" sortable></el-table-column>
       <el-table-column prop="clicked" label="Đã click" sortable></el-table-column>
-      <el-table-column prop="interacted" label="Đã tương tác" sortable></el-table-column>
     </el-table>
+    <el-button type="primary" icon="el-icon-plus" class="button-add" @click="addNewMessage"></el-button>
   </div>
 </template>
 
@@ -23,9 +22,10 @@
   import { mapGetters, mapActions, mapState } from 'vuex'
 
   export default {
+    props: ['id'],
     computed: {
       ...mapGetters({
-        campaigns: 'campaigns'
+        messages: 'messages'
       }),
       ...mapState({
         loading: state => state.campaign.loading
@@ -33,14 +33,14 @@
     },
     methods: {
       ...mapActions([
-        'getAllCampaigns'
+        'getPageMessages'
       ]),
-      handleRowClicked: function (row) {
-        this.$router.push({ name: 'CampaignDetail', params: { campaign_id: 1 } })
+      addNewMessage: function () {
+        this.$router.push({ name: 'AddNewMessage' })
       }
     },
     created () {
-      this.getAllCampaigns()
+      this.getPageMessages(this.id)
     }
   }
 </script>
@@ -49,5 +49,12 @@
   .wrapper {
     height: 100vh;
     margin: auto;
+  }
+  .button-add {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    padding: 20px;
+    border-radius: 27px;
   }
 </style>

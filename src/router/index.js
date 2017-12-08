@@ -9,7 +9,8 @@ import NewArrival from '@/components/NewArrival'
 import Customer from '@/components/Customer'
 import CustomerGroup from '@/components/CustomerGroup'
 import MyPages from '@/components/MyPages'
-import CampaignDetail from '@/components/CampaignDetail'
+import AddNewMessage from '@/components/AddNewMessage'
+
 import store from '../store'
 
 Vue.use(Router)
@@ -23,8 +24,8 @@ const router = new Router({
       path: '/pages/:id/campaigns',
       component: PageDetail,
       children: [
-        { path: '', name: 'Campaign', component: Campaign, meta: { requiresAuth: true } },
-        { path: '/pages/:id/campaigns/:campaign_id', name: 'CampaignDetail', component: CampaignDetail, meta: { requiresAuth: true } }
+        { path: '', name: 'Campaign', component: Campaign, meta: { requiresAuth: true }, props: true },
+        { path: '/pages/:id/campaigns/add-new-message', name: 'AddNewMessage', component: AddNewMessage, meta: { requiresAuth: true }, props: true }
       ]
     },
     {

@@ -1,21 +1,26 @@
 import axiosClient from './axios-client'
-import { CAMPAIGNS_ENDPOINT } from './endpoints'
+import { PAGE_MESSAGES_ENDPOINT } from './endpoints'
 import store from '../store'
 
-export const getCampaigns = async () => {
+const getPageMessages = async (pageId) => {
   try {
-    const response = await axiosClient.get(CAMPAIGNS_ENDPOINT, {
+    const url = PAGE_MESSAGES_ENDPOINT.replace('pageId', pageId)
+    const response = await axiosClient.get(url, {
       headers: {
         Authorization: `Bearer ${store.state.auth.shopToken}`
       }
     })
     const responseData = response.data
     if (responseData.meta.success) {
-      return responseData.data
+      return responseData.data.data
     } else {
       return []
     }
   } catch (e) {
     return []
   }
+}
+
+export default {
+  getPageMessages
 }

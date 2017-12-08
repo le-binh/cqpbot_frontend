@@ -1,51 +1,38 @@
-import { FINISH_LOADING_CAMPAIGNS, RECEIVE_ALL_CAMPAIGNS, START_LOADING_CAMPAIGNS } from '../mutation-types'
-import { getCampaigns } from '../../apis/campaign'
+import { FINISH_LOADING_PAGE_MESSAGES, RECEIVE_ALL_PAGE_MESSAGES, START_LOADING_PAGE_MESSAGES } from '../mutation-types'
+import campaignApi from '../../apis/campaign'
 
 const state = {
-  campaigns: [],
+  messages: [],
   loading: true
 }
 
 const getters = {
-  campaigns: state => state.campaigns
+  messages: state => state.messages.map(message => ({
+    name: message.title,
+    sent: message.statistic.sent,
+    read: message.statistic.read,
+    clicked: message.statistic.clicked
+  }))
 }
 
 const actions = {
-  getAllCampaigns ({ commit }) {
-    commit(START_LOADING_CAMPAIGNS)
-    getCampaigns().then(campaigns => {
-      commit(FINISH_LOADING_CAMPAIGNS)
-      console.log(campaigns)
-      const dummyCampaigns = [{
-        name: 'Sinh nhật quán',
-        type: 'Gửi ngay',
-        total: 1000,
-        sent: 1000,
-        read: 950,
-        clicked: 900,
-        interacted: 500
-      }, {
-        name: 'Thứ 2 cuối mỗi tháng',
-        type: 'Gửi theo lịch',
-        total: 1000,
-        sent: 1000,
-        read: 950,
-        clicked: 900,
-        interacted: 500
-      }]
-      commit(RECEIVE_ALL_CAMPAIGNS, { campaigns: dummyCampaigns })
+  getPageMessages ({ commit }, pageId) {
+    commit(START_LOADING_PAGE_MESSAGES)
+    campaignApi.getPageMessages(pageId).then(messages => {
+      commit(FINISH_LOADING_PAGE_MESSAGES)
+      commit(RECEIVE_ALL_PAGE_MESSAGES, { messages: messages })
     })
   }
 }
 
 const mutations = {
-  [RECEIVE_ALL_CAMPAIGNS] (state, { campaigns }) {
-    state.campaigns = campaigns
+  [RECEIVE_ALL_PAGE_MESSAGES] (state, { messages }) {
+    state.messages = messages
   },
-  [START_LOADING_CAMPAIGNS] (state) {
+  [START_LOADING_PAGE_MESSAGES] (state) {
     state.loading = true
   },
-  [FINISH_LOADING_CAMPAIGNS] (state) {
+  [FINISH_LOADING_PAGE_MESSAGES] (state) {
     state.loading = false
   }
 }
