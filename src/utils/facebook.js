@@ -20,6 +20,6 @@ export const fbLogin = () => {
   return new Promise(resolve => {
     FB.login(response => {
       resolve(getUserCredentials(response))
-    }, {scope: 'public_profile,email,manage_pages'})
+    }, {scope: 'public_profile,email,manage_pages,pages_messaging,pages_show_list,pages_messaging_subscriptions'})
   })
 }

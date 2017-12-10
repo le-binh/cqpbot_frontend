@@ -36,7 +36,7 @@
   }
 </script>
 
-<style scoped="">
+<style scoped>
   .wrapper {
     width: 50%;
     height: 150px;

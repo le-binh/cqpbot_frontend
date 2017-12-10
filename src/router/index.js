@@ -10,6 +10,7 @@ import Customer from '@/components/Customer'
 import CustomerGroup from '@/components/CustomerGroup'
 import MyPages from '@/components/MyPages'
 import AddNewMessage from '@/components/AddNewMessage'
+import AddNewCustomerGroup from '@/components/AddNewCustomerGroup'
 
 import store from '../store'
 
@@ -53,7 +54,8 @@ const router = new Router({
       path: '/pages/:id/customer-group',
       component: PageDetail,
       children: [
-        { path: '', name: 'CustomerGroup', component: CustomerGroup, meta: { requiresAuth: true } }
+        { path: '', name: 'CustomerGroup', component: CustomerGroup, meta: { requiresAuth: true }, props: true },
+        { path: '/pages/:id/customer-group/add-new-group', name: 'AddNewCustomerGroup', component: AddNewCustomerGroup, meta: { requiresAuth: true }, props: true }
       ]
     }
   ],

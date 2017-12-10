@@ -45,7 +45,7 @@
   }
 </script>
 
-<style scoped="">
+<style scoped>
   .wrapper {
     height: 100vh;
     margin: auto;

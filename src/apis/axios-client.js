@@ -5,4 +5,10 @@ const axiosConfig = {
   timeout: 20000
 }
 
-export default axios.create(axiosConfig)
+const axiosClient = axios.create(axiosConfig)
+axiosClient.interceptors.request.use(config => {
+  console.log(config)
+  return config
+})
+
+export default axiosClient

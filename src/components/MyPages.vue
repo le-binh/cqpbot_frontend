@@ -42,7 +42,7 @@
 </script>
 
 
-<style scoped="">
+<style scoped>
   .wrapper {
     width: 800px;
     height: 100vh;

@@ -33,6 +33,7 @@
         :total="1000">
       </el-pagination>
     </div>
+    <el-button type="primary" icon="el-icon-plus" class="button-add" @click="addNewMessage"></el-button>
   </div>
 </template>
 
@@ -40,9 +41,10 @@
   import { mapGetters, mapActions, mapState } from 'vuex'
 
   export default {
+    props: ['id'],
     computed: {
       ...mapGetters({
-        customerGroups: 'customerGroups'
+        customerGroups: 'displayedCustomerGroups'
       }),
       ...mapState({
         loading: state => state.customerGroup.loading
@@ -50,19 +52,22 @@
     },
     methods: {
       ...mapActions([
-        'getAllCustomerGroups'
+        'getCustomerGroups'
       ]),
       handleRowClicked: function (row) {
         console.log(`Clicked row ${row}`)
+      },
+      addNewMessage: function () {
+        this.$router.push({ name: 'AddNewCustomerGroup', params: { id: this.id } })
       }
     },
     created () {
-      this.getAllCustomerGroups()
+      this.getCustomerGroups(this.id)
     }
   }
 </script>
 
-<style scoped="">
+<style scoped>
   .pagination {
     text-align: center;
     margin-top: 16px;
@@ -71,5 +76,13 @@
   .wrapper {
     height: 100vh;
     margin: auto;
+  }
+
+  .button-add {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    padding: 20px;
+    border-radius: 27px;
   }
 </style>

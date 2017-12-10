@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
   .navbar {
     display: inline-block;
   }

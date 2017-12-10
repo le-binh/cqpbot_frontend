@@ -1,40 +1,61 @@
-import { FINISH_LOADING_CUSTOMERS_GROUP, RECEIVE_ALL_CUSTOMERS_GROUP, START_LOADING_CUSTOMERS_GROUP } from '../mutation-types'
-import { getCustomerGroups } from '../../apis/customer-group'
+import {
+  FINISH_LOADING_CUSTOMERS_GROUP, RECEIVE_ALL_CUSTOMERS_GROUP, START_LOADING_CUSTOMERS_GROUP,
+  SEARCH_GROUP
+} from '../mutation-types'
+import customerGroupsApi from '../../apis/customer-group'
+import { genderDict, comparisonDict } from '../constants'
+
+const parsingGroupCondition = (condition) => {
+  return `${comparisonDict[condition.condition]} ${condition.value}`
+}
+
+const normalizeCustomerGroupsForDisplay = (groups) => {
+  return groups.map(group => {
+    return {
+      id: group._id,
+      groupName: group.title,
+      customerName: group.conditions.name ? `Chứa ${group.conditions.name}` : '',
+      gender: genderDict[group.conditions.gender || 'all'],
+      like: 0,
+      lastInteraction: group.conditions.lastInteract ? `${group.conditions.lastInteract} ngày` : '',
+      comments: group.conditions.comments ? parsingGroupCondition(group.conditions.comments) : '',
+      inbox: group.conditions.inbox ? parsingGroupCondition(group.conditions.inbox) : '',
+      reactions: group.conditions.reactions ? parsingGroupCondition(group.conditions.reactions) : ''
+    }
+  })
+}
 
 const state = {
   customerGroups: [],
-  loading: true
+  loading: true,
+  filteredCustomerGroups: []
 }
 
 const getters = {
-  customerGroups: state => state.customerGroups
+  customerGroups: state => state.customerGroups,
+  displayedCustomerGroups: state => normalizeCustomerGroupsForDisplay(state.customerGroups),
+  filteredCustomerGroups: state => state.filteredCustomerGroups
 }
 
 const actions = {
-  getAllCustomerGroups ({ commit }) {
+  getCustomerGroups ({ commit }, pageId) {
     commit(START_LOADING_CUSTOMERS_GROUP)
-    getCustomerGroups().then(customerGroups => {
+    customerGroupsApi.getCustomerGroups(pageId).then(customerGroups => {
       commit(FINISH_LOADING_CUSTOMERS_GROUP)
-      console.log(customerGroups)
-      const dummyCustomerGroups = [{
-        groupName: 'Beautiful girl',
-        customerName: 'chứa: Ngọc Trinh ',
-        gender: 'Nữ',
-        like: '= 100',
-        comments: '> 5',
-        inbox: '< 100',
-        lastInteraction: '= 3 ngày'
-      }, {
-        groupName: 'Beautiful girl',
-        customerName: 'chứa: Nguyễn Khánh Linh',
-        gender: 'Nữ',
-        like: '< 100',
-        comments: '',
-        inbox: '',
-        lastInteraction: '>= 3 ngày'
-      }]
-      commit(RECEIVE_ALL_CUSTOMERS_GROUP, { customerGroups: dummyCustomerGroups })
+      commit(RECEIVE_ALL_CUSTOMERS_GROUP, { customerGroups: customerGroups })
     })
+  },
+  searchGroup ({ commit, state }, query) {
+    let groups
+    if (query !== '') {
+      groups = state.customerGroups.filter(group => {
+        return group.title.toLowerCase()
+          .indexOf(query.toLowerCase()) > -1
+      })
+    } else {
+      groups = []
+    }
+    commit(SEARCH_GROUP, { groups })
   }
 }
 
@@ -47,6 +68,9 @@ const mutations = {
   },
   [FINISH_LOADING_CUSTOMERS_GROUP] (state) {
     state.loading = false
+  },
+  [SEARCH_GROUP] (state, { groups }) {
+    state.filteredCustomerGroups = groups
   }
 }
 
