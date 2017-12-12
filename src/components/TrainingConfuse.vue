@@ -22,7 +22,7 @@
     <el-table-column label="Từ khách hàng hỏi" prop="question"></el-table-column>
     <el-table-column label="Hành động" width="120">
       <template slot-scope="scope">
-        <el-button type="primary" size="small" @click="handleAnswer(scope.$index, scope.row)">Trả lời</el-button>
+        <el-button type="text" size="small" @click="handleAnswer(scope.$index, scope.row)">Trả lời</el-button>
       </template>
     </el-table-column>
   </el-table>

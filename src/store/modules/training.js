@@ -6,14 +6,20 @@ const dummyConfusingQuestions = [
   { id: 3, question: 'Foo Bar' }
 ]
 
+const dummyDoubtQuestions = [
+  { id: 1, question: 'Foo Bar', answer: 'Foo Bar', doubt: 'Foo Bar' }
+]
+
 const state = {
   inboxes: [],
-  confusingQuestions: [...dummyConfusingQuestions]
+  confusingQuestions: [...dummyConfusingQuestions],
+  doubtQuestions: [...dummyDoubtQuestions]
 }
 
 const getters = {
   inboxes: state => state.inboxes,
-  confusingQuestions: state => state.confusingQuestions
+  confusingQuestions: state => state.confusingQuestions,
+  doubtQuestions: state => state.doubtQuestions
 }
 
 const actions = {
