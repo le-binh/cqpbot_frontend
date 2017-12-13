@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-loading="loading">
+  <div class="wrapper" v-loading.fullscreen.lock="loading">
     <el-select
       multiple filterable remote
       v-model="selectedCustomerGroups"

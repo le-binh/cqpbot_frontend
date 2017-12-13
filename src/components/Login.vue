@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-loading="loading">
+  <div class="wrapper" v-loading.fullscreen.lock="loading">
     <div class="login-form" v-bind:class="{ hidden: hideLoginForm }">
       <span class="login-title">Cần đăng nhập để sử dụng</span>
       <el-button class="login-button" type="primary" @click="loginClicked">Đăng nhập với Facebook</el-button>

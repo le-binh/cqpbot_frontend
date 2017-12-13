@@ -26,35 +26,11 @@ const router = new Router({
       component: PageDetail,
       children: [
         { path: '', name: 'Campaign', component: Campaign, meta: { requiresAuth: true }, props: true },
-        { path: '/pages/:id/campaigns/add-new-message', name: 'AddNewMessage', component: AddNewMessage, meta: { requiresAuth: true }, props: true }
-      ]
-    },
-    {
-      path: '/pages/:id/training',
-      component: PageDetail,
-      children: [
-        { path: '', name: 'Training', component: Training, meta: { requiresAuth: true } }
-      ]
-    },
-    {
-      path: '/pages/:id/new-arrival',
-      component: PageDetail,
-      children: [
-        { path: '', name: 'NewArrival', component: NewArrival, meta: { requiresAuth: true } }
-      ]
-    },
-    {
-      path: '/pages/:id/customer',
-      component: PageDetail,
-      children: [
-        { path: '', name: 'Customer', component: Customer, meta: { requiresAuth: true } }
-      ]
-    },
-    {
-      path: '/pages/:id/customer-group',
-      component: PageDetail,
-      children: [
-        { path: '', name: 'CustomerGroup', component: CustomerGroup, meta: { requiresAuth: true }, props: true },
+        { path: '/pages/:id/campaigns/add-new-message', name: 'AddNewMessage', component: AddNewMessage, meta: { requiresAuth: true }, props: true },
+        { path: '/pages/:id/training', name: 'Training', component: Training, meta: { requiresAuth: true }, props: true },
+        { path: '/pages/:id/new-arrival', name: 'NewArrival', component: NewArrival, meta: { requiresAuth: true }, props: true },
+        { path: '/pages/:id/customer', name: 'Customer', component: Customer, meta: { requiresAuth: true }, props: true },
+        { path: '/pages/:id/customer-group', name: 'CustomerGroup', component: CustomerGroup, meta: { requiresAuth: true }, props: true },
         { path: '/pages/:id/customer-group/add-new-group', name: 'AddNewCustomerGroup', component: AddNewCustomerGroup, meta: { requiresAuth: true }, props: true }
       ]
     }

@@ -1,32 +1,28 @@
 <template>
-  <div>
-    <div class="navbar">
-      <PageDetailSideBar />
-    </div>
-    <div class="content">
-      <router-view></router-view>
-    </div>
-  </div>
+  <el-container>
+    <el-header>Header</el-header>
+    <el-container class="content-container">
+      <el-aside width="200px">
+        <SideBar />
+      </el-aside>
+      <el-main>
+        <router-view/>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
-<style scoped>
-  .navbar {
-    display: inline-block;
-  }
-
-  .content {
-    vertical-align: top;
-    display: inline-block;
-    width: calc(100% - 170px);
-    margin-left: 16px;
-  }
-</style>
-
 <script>
-  import PageDetailSideBar from './PageDetailSideBar.vue'
+  import SideBar from '@/components/SideBar'
 
   export default {
     name: 'Page-Detail',
-    components: { PageDetailSideBar }
+    components: { SideBar }
   }
 </script>
+
+<style scoped>
+  .content-container {
+    min-height: calc(100vh - 60px);
+  }
+</style>

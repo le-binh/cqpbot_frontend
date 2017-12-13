@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-loading="loading">
+  <div class="wrapper" v-loading.fullscreen.lock="loading">
     <span class="title">Danh sách fanpage của tôi</span>
     <PageItem v-for="(page, index) in pages"
               :page="page" :key="page._id"

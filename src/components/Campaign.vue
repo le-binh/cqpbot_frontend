@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-loading="loading">
+  <div class="wrapper" v-loading.fullscreen.lock="loading">
     <el-table
       :data="messages"
       stripe
@@ -47,7 +47,7 @@
 
 <style scoped>
   .wrapper {
-    height: 100vh;
+    height: 100%;
     margin: auto;
   }
   .button-add {

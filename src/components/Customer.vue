@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-loading="loading">
+  <div class="wrapper" v-loading.fullscreen.lock="loading">
     <el-table
       :data="customers"
       stripe style="width: 100%"
@@ -58,7 +58,7 @@
 
 <style scoped>
   .wrapper {
-    height: 100vh;
+    height: 100%;
     margin: auto;
   }
 </style>
