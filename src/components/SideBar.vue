@@ -14,11 +14,11 @@
       const id = this.$route.params.id
       return {
         links: [
-          { path: `/pages/${id}/campaigns/`, icon: 'el-menu-icon', title: 'Chiến dịch' },
-          { path: `/pages/${id}/training/`, icon: 'el-menu-icon', title: 'Huấn luyện' },
-          { path: `/pages/${id}/new-arrival/`, icon: 'el-menu-icon', title: 'Hàng mới về' },
-          { path: `/pages/${id}/customer/`, icon: 'el-menu-icon', title: 'Khách hàng' },
-          { path: `/pages/${id}/customer-group/`, icon: 'el-menu-icon', title: 'Nhóm khách hàng' }
+          { path: `/pages/${id}/campaigns/`, icon: 'el-icon-setting', title: 'Chiến dịch' },
+          { path: `/pages/${id}/training/`, icon: 'el-icon-setting', title: 'Huấn luyện' },
+          { path: `/pages/${id}/new-arrival/`, icon: 'el-icon-setting', title: 'Hàng mới về' },
+          { path: `/pages/${id}/customer/`, icon: 'el-icon-setting', title: 'Khách hàng' },
+          { path: `/pages/${id}/customer-group/`, icon: 'el-icon-setting', title: 'Nhóm khách hàng' }
         ],
         activePath: `/pages/${id}/campaigns/`
       }
@@ -44,5 +44,6 @@
 <style scoped>
   .menu {
     height: 100%;
+    background-color: rgb(238, 241, 246)
   }
 </style>

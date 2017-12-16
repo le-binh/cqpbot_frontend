@@ -11,16 +11,18 @@ const state = {
 }
 
 const getters = {
-  allPages: state => state.pages
+  allPages: state => state.pages,
+  getPageById: state => id => {
+    return state.pages.find(page => page._id === id)
+  }
 }
 
 const actions = {
-  getMyPages ({ commit }) {
+  async getMyPages ({ commit }) {
     commit(START_LOADING_PAGES)
-    myPagesApi.getMyPages().then(pages => {
-      commit(FINISH_LOADING_PAGES)
-      commit(RECEIVE_ALL_PAGES, { pages })
-    })
+    const pages = await myPagesApi.getMyPages()
+    commit(FINISH_LOADING_PAGES)
+    commit(RECEIVE_ALL_PAGES, { pages })
   },
   activatePage ({ commit }, pageId) {
     commit(START_ACTIVATING_PAGE)

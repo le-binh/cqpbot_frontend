@@ -25,6 +25,7 @@ const router = new Router({
     {
       path: '/pages/:id/campaigns',
       component: PageDetail,
+      props: true,
       children: [
         { path: '', name: 'Campaign', component: Campaign, meta: { requiresAuth: true }, props: true },
         { path: '/pages/:id/campaigns/add-new-message', name: 'AddNewMessage', component: AddNewMessage, meta: { requiresAuth: true }, props: true },

@@ -8,6 +8,7 @@ import customerGroup from './modules/customer-group'
 import training from './modules/training'
 import message from './modules/message'
 import addNewGroup from './modules/add-new-group'
+import pageDetail from './modules/page-detail'
 
 Vue.use(Vuex)
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     customerGroup,
     training,
     message,
-    addNewGroup
+    addNewGroup,
+    pageDetail
   }
 })
