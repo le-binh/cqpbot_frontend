@@ -6,6 +6,7 @@ import Login from '@/components/Login'
 import Campaign from '@/components/Campaign'
 import Training from '@/components/Training'
 import NewArrival from '@/components/NewArrival'
+import AddNewArrival from '@/components/AddNewArrival'
 import Customer from '@/components/Customer'
 import CustomerGroup from '@/components/CustomerGroup'
 import MyPages from '@/components/MyPages'
@@ -29,6 +30,7 @@ const router = new Router({
         { path: '/pages/:id/campaigns/add-new-message', name: 'AddNewMessage', component: AddNewMessage, meta: { requiresAuth: true }, props: true },
         { path: '/pages/:id/training', name: 'Training', component: Training, meta: { requiresAuth: true }, props: true },
         { path: '/pages/:id/new-arrival', name: 'NewArrival', component: NewArrival, meta: { requiresAuth: true }, props: true },
+        { path: '/pages/:id/new-arrival/add-new-arrival', name: 'AddNewArrival', component: AddNewArrival, meta: { requiresAuth: true }, props: true },
         { path: '/pages/:id/customer', name: 'Customer', component: Customer, meta: { requiresAuth: true }, props: true },
         { path: '/pages/:id/customer-group', name: 'CustomerGroup', component: CustomerGroup, meta: { requiresAuth: true }, props: true },
         { path: '/pages/:id/customer-group/add-new-group', name: 'AddNewCustomerGroup', component: AddNewCustomerGroup, meta: { requiresAuth: true }, props: true }
