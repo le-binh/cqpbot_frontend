@@ -39,7 +39,7 @@
       },
       redirectOrShowError (success) {
         if (success) {
-          this.$router.push({path: this.$route.query.redirect || '/pages'})
+          this.$router.replace({path: this.$route.query.redirect || '/pages'})
         }
       }
     },
