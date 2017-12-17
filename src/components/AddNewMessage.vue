@@ -225,6 +225,7 @@
           this.createNewBasicMessage({
             pageId: this.id,
             message: this.basicFormData.message,
+            groups: this.groupFormData.selectedCustomerGroups,
             buttons: this.basicFormData.buttons
           }).then(createMessageHandler)
         } else {
@@ -233,6 +234,7 @@
             pageId: this.id,
             title: this.advancedFormData.title,
             subTitle: this.advancedFormData.subTitle,
+            groups: this.groupFormData.selectedCustomerGroups,
             buttons: this.advancedFormData.buttons
           }).then(success => {
             vm.updateMessagePhoto({ messageId: vm.messageId, file: vm.advancedFormData.photo })
