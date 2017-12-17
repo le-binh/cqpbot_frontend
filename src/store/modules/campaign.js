@@ -16,12 +16,12 @@ const getters = {
 }
 
 const actions = {
-  getPageMessages ({ commit }, pageId) {
+  async getPageMessages ({ commit }, pageId) {
     commit(START_LOADING_PAGE_MESSAGES)
-    campaignApi.getPageMessages(pageId).then(messages => {
-      commit(FINISH_LOADING_PAGE_MESSAGES)
-      commit(RECEIVE_ALL_PAGE_MESSAGES, { messages: messages })
-    })
+    const messages = await campaignApi.getPageMessages(pageId)
+    commit(FINISH_LOADING_PAGE_MESSAGES)
+    commit(RECEIVE_ALL_PAGE_MESSAGES, { messages: messages })
+    return messages
   }
 }
 

@@ -1,10 +1,15 @@
-import { ADD_NEW_GROUP_CONDITION, DELETE_GROUP_CONDITION } from '../mutation-types'
+import {
+  ADD_NEW_GROUP_CONDITION, DELETE_GROUP_CONDITION, START_CREATING_CUSTOMER_GROUP,
+  FINISH_CREATING_CUSTOMER_GROUP
+} from '../mutation-types'
 import { genderDict, comparisonDict } from '../constants'
+import customerGroupsApi from '../../apis/customer-group'
 
 const state = {
   pageId: '',
   title: '',
-  conditions: {}
+  conditions: {},
+  loading: false
 }
 
 const normalizeConditions = conditions => {
@@ -39,6 +44,12 @@ const actions = {
   },
   deleteCondition ({ commit }, conditionKey) {
     commit(DELETE_GROUP_CONDITION, conditionKey)
+  },
+  async createCustomerGroup ({ commit }, pageId) {
+    commit(START_CREATING_CUSTOMER_GROUP)
+    const success = await customerGroupsApi.createCustomerGroup(pageId, state.conditions)
+    commit(FINISH_CREATING_CUSTOMER_GROUP)
+    return success
   }
 }
 
@@ -50,6 +61,12 @@ const mutations = {
     let conditions = { ...state.conditions }
     delete conditions[conditionKey]
     state.conditions = { ...conditions }
+  },
+  [START_CREATING_CUSTOMER_GROUP] (state) {
+    state.loading = true
+  },
+  [FINISH_CREATING_CUSTOMER_GROUP] (state) {
+    state.loading = false
   }
 }
 

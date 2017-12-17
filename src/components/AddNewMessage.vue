@@ -144,10 +144,11 @@
         'getCustomerGroups',
         'createNewBasicMessage',
         'createNewAdvancedMessage',
-        'updateMessagePhoto'
+        'updateMessagePhoto',
+        'saveCurrentMessage'
       ]),
       onAddNewCustomerGroup: function () {
-        this.$router.push({ name: 'AddNewCustomerGroup', params: { id: this.id } })
+        this.$router.push({ name: 'AddNewCustomerGroup', params: { id: this.id }, query: { redirect: this.$route.fullPath } })
       },
       submitForm (formName) {
         const vm = this

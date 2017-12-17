@@ -58,7 +58,7 @@
         console.log(`Clicked row ${row}`)
       },
       addNewMessage: function () {
-        this.$router.push({ name: 'AddNewCustomerGroup', params: { id: this.id } })
+        this.$router.push({ name: 'AddNewCustomerGroup', params: { id: this.id }, query: { redirect: this.$route.fullPath } })
       }
     },
     created () {
