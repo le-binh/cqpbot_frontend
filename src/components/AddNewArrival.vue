@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form :model="formData" :rules="rules" ref="formData" label-width="120px" label-position="left" class="formStyle">
-      <el-form-item label="Picture" prop="imageUrl">
+      <el-form-item label="Hình ảnh" prop="imageUrl">
         <div class="upload">
           <el-upload
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -15,7 +15,7 @@
             <i class="el-icon-plus"></i>
           </el-upload>
         </div>
-        <el-dialog :visible.sync="formData.dialogVisible" size="tiny">
+        <el-dialog :visible.sync="formData.dialogVisible">
           <img width="100%" :src="formData.dialogImageUrl" alt="">
         </el-dialog>
       </el-form-item>
@@ -127,6 +127,7 @@
   .subTitle .el-input {
     margin-top: 22px;
   }
+
   .upload {
     height: 148px;
   }

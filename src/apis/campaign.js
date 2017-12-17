@@ -21,10 +21,9 @@ const getPageMessages = async (pageId) => {
   }
 }
 
-const createMessage = async (pageId, params) => {
+const createMessage = async (params) => {
   try {
-    const url = MESSAGE_ENDPOINT.replace('pageId', pageId)
-    const response = await axiosClient.post(url, params, {
+    const response = await axiosClient.post(MESSAGE_ENDPOINT, params, {
       headers: {
         Authorization: `Bearer ${store.state.auth.shopToken}`
       }

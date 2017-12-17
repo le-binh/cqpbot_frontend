@@ -1,136 +1,214 @@
 <template>
   <div class="wrapper" v-loading.fullscreen.lock="loading">
-    <el-select
-      multiple filterable remote
-      v-model="selectedCustomerGroups"
-      placeholder="Please enter a keyword"
-      no-data-text="Không tìm thấy, hãy tạo thêm nhóm mới"
-      :remote-method="searchGroup"
-      class="customer-group-select">
-      <el-option
-        v-for="group in filteredCustomerGroups"
-        :key="group._id"
-        :label="group.title"
-        :value="group._id">
-      </el-option>
-    </el-select>
-    <el-button type="primary" class="button" @click="onAddNewCustomerGroup">Thêm nhóm mới</el-button>
+    <el-form :model="groupFormData" :rules="rules" ref="groupFormData" label-width="0" label-position="left" class="formStyle">
+      <el-form-item prop="selectedCustomerGroups">
+        <el-select
+          multiple filterable remote
+          v-model="groupFormData.selectedCustomerGroups"
+          placeholder="Chọn nhóm khách hàng"
+          no-data-text="Không tìm thấy, hãy tạo thêm nhóm mới"
+          :remote-method="searchGroup"
+          class="customer-group-select">
+          <el-option
+            v-for="group in filteredCustomerGroups"
+            :key="group._id"
+            :label="group.title"
+            :value="group._id">
+          </el-option>
+        </el-select>
+        <el-button type="primary" class="add-customer-group-button" @click="onAddNewCustomerGroup">Thêm nhóm mới</el-button>
+      </el-form-item>
+    </el-form>
+
     <div class="messages-tab">
       <el-tabs type="card" ref="messageTabs" value="basic">
         <el-tab-pane label="Cơ bản" name="basic">
-          <el-input placeholder="Nội dung tin nhắn" type="textarea" :rows="3" v-model="message"></el-input>
-          <MessageButtons :buttons="basicButtons" @addNewButton="addNewBasicButton" @deleteButton="deleteBasicButton" :limit="3"/>
+          <el-form :model="basicFormData" :rules="rules" ref="basicFormData" label-width="0" label-position="left" class="formStyle">
+            <el-form-item prop="message">
+              <el-input placeholder="Nội dung tin nhắn" type="textarea" :rows="3" v-model="basicFormData.message"></el-input>
+            </el-form-item>
+            <el-form-item
+              v-for="(button, index) in basicFormData.buttons"
+              :key="button.key"
+            >
+              <el-input v-model="button.title" placeholder="Tiêu đề cho nút"></el-input>
+              <el-input v-model="button.link" placeholder="Link khi click vào nút"></el-input>
+              <el-button type="danger" icon="el-icon-delete" size="small" @click.prevent="removeButton(button)"></el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('basicFormData')">Submit</el-button>
+              <el-button @click="addButton">Thêm nút</el-button>
+            </el-form-item>
+          </el-form>
         </el-tab-pane>
         <el-tab-pane label="Nâng cao" name="advanced">
-          <el-upload accept="image/*" class="upload-demo" action="https://dev-api.misena.me/photos/messages" list-type="picture-card" :auto-upload="false" :show-file-list="false" :on-change="handleChange">
-            <i v-if="showImagePlaceholder" class="el-icon-picture"></i>
-            <img v-else v-bind:src="previewURL" class="image"/>
-          </el-upload>
-          <div class="message-titles">
-            <el-input placeholder="Tiêu đề tin nhắn chính" v-model="messageTitle"></el-input>
-            <el-input placeholder="Tiêu đề tin nhắn phụ" v-model="messageSubTitle"></el-input>
-          </div>
-          <MessageButtons :buttons="advancedButtons" @addNewButton="addNewAdvancedButton" @deleteButton="deleteAdvancedButton" :limit="3"/>
+          <el-form :model="advancedFormData" :rules="rules" ref="advancedFormData" label-width="0" label-position="left" class="formStyle">
+            <el-form-item prop="imageUrl">
+              <div class="upload">
+                <el-upload
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  list-type="picture-card"
+                  accept="image/*"
+                  :auto-upload="false"
+                  :limit="1"
+                  :on-preview="handlePictureCardPreview"
+                  :on-change="handleChange"
+                  :on-remove="handleRemove">
+                  <i class="el-icon-plus"></i>
+                </el-upload>
+              </div>
+              <el-dialog :visible.sync="advancedFormData.dialogVisible">
+                <img width="100%" :src="advancedFormData.dialogImageUrl" alt="">
+              </el-dialog>
+            </el-form-item>
+            <el-form-item>
+              <div>
+                <el-form-item prop="title">
+                  <el-input v-model="advancedFormData.title" placeholder="Tiêu đề tin nhắn chính"></el-input>
+                </el-form-item>
+              </div>
+              <div class="subTitle">
+                <el-form-item prop="subTitle">
+                  <el-input v-model="advancedFormData.subTitle" placeholder="Tiêu đề tin nhắn phụ"></el-input>
+                </el-form-item>
+              </div>
+            </el-form-item>
+            <el-form-item
+              v-for="(button, index) in advancedFormData.buttons"
+              :key="button.key"
+            >
+              <el-input v-model="button.title" placeholder="Tiêu đề cho nút"></el-input>
+              <el-input v-model="button.link" placeholder="Link khi click vào nút"></el-input>
+              <el-button type="danger" icon="el-icon-delete" size="small" @click.prevent="removeAdvancedButton(button)"></el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('advancedFormData')">Submit</el-button>
+              <el-button @click="addAdvancedButton">Thêm nút</el-button>
+            </el-form-item>
+          </el-form>
         </el-tab-pane>
       </el-tabs>
-    </div>
-    <div>
-      <el-button type="primary" class="add-msg-button" @click="onCreateMessage">Thêm tin nhắn</el-button>
     </div>
   </div>
 </template>
 
 <script>
   import { mapGetters, mapActions, mapState } from 'vuex'
-  import MessageButtons from './MessageButtons.vue'
 
   export default {
     props: ['id'],
-    components: { MessageButtons },
     data () {
       return {
-        previewURL: ''
+        groupFormData: {
+          selectedCustomerGroups: [],
+          valid: false
+        },
+        basicFormData: {
+          message: '',
+          buttons: [{
+            key: Date.now(),
+            title: '',
+            link: ''
+          }],
+          valid: false
+        },
+        advancedFormData: {
+          buttons: [{
+            key: Date.now(),
+            title: '',
+            link: ''
+          }],
+          title: '',
+          subTitle: '',
+          dialogImageUrl: '',
+          dialogVisible: false,
+          uploadVisible: true,
+          imageUrl: '',
+          valid: false
+        },
+        rules: {
+          selectedCustomerGroups: [{type: 'array', required: true, message: 'Vui lòng chọn ít nhất 1 nhóm khách hàng', trigger: 'blur'}],
+          message: [{required: true, message: 'Vui lòng nhập nội dung tin nhắn', trigger: 'blur'}],
+          imageUrl: [{required: true, message: 'Please upload a picture', trigger: 'blur,change'}],
+          title: [{ required: true, message: 'Vui lòng nhập tiêu đề chính', trigger: 'change' }],
+          subTitle: [{ required: true, message: 'Vui lòng nhập tiêu đề phụ', trigger: 'change' }]
+        }
       }
     },
     computed: {
       ...mapGetters({
-        customerGroups: 'customerGroups',
-        filteredCustomerGroups: 'filteredCustomerGroups',
-        _basicButtons: 'basicButtons',
-        _advancedButtons: 'advancedButtons'
+        filteredCustomerGroups: 'filteredCustomerGroups'
       }),
       ...mapState({
-        loading: state => state.customerGroup.loading,
-        _selectedCustomerGroups: state => state.message.groups,
-        _messageTitle: state => state.message.title,
-        _messageSubTitle: state => state.message.subTitle,
-        _message: state => state.message.message
-      }),
-      selectedCustomerGroups: {
-        get () { return this._selectedCustomerGroups },
-        set (groups) { this.updateSelectedGroups(groups) }
-      },
-      message: {
-        get () { return this._message },
-        set (newMessage) { this.updateMessage(newMessage) }
-      },
-      messageTitle: {
-        get () { return this._messageTitle },
-        set (newMessageTitle) { this.updateMessageTitle(newMessageTitle) }
-      },
-      messageSubTitle: {
-        get () { return this._messageSubTitle },
-        set (newMessageSubTitle) { this.updateMessageSubTitle(newMessageSubTitle) }
-      },
-      basicButtons: {
-        get () { return this._basicButtons },
-        set (buttons) { this.updateBasicButtons(buttons) }
-      },
-      advancedButtons: {
-        get () { return this._advancedButtons },
-        set (buttons) { this.updateAdvancedButtons(buttons) }
-      },
-      showImagePlaceholder: function () {
-        return this.previewURL === ''
-      }
-    },
-    created () {
-      this.getCustomerGroups(this.id)
+        loading: state => state.customerGroup.loading
+      })
     },
     methods: {
       ...mapActions([
-        'getCustomerGroups',
         'searchGroup',
-        'updateSelectedGroups',
-        'updateMessage',
-        'updateMessageTitle',
-        'updateMessageSubTitle',
-        'updateBasicButtons',
-        'updateAdvancedButtons',
-        'addNewBasicButton',
-        'addNewAdvancedButton',
-        'deleteBasicButton',
-        'deleteAdvancedButton',
+        'getCustomerGroups',
         'createNewBasicMessage',
         'createNewAdvancedMessage'
       ]),
       onAddNewCustomerGroup: function () {
         this.$router.push({ name: 'AddNewCustomerGroup', params: { id: this.id } })
       },
-      handleChange (file) {
-        this.readURL(file.raw)
-      },
-      readURL (file) {
-        if (file) {
-          const reader = new FileReader()
-          const vm = this
-          reader.onload = function (e) {
-            vm.previewURL = e.target.result
-          }
-          reader.readAsDataURL(file)
+      submitForm (formName) {
+        const vm = this
+        const groupForm = this.$refs.groupFormData
+        const messageForm = this.$refs[formName]
+        groupForm.validate(valid => { vm.groupFormData.valid = valid })
+        messageForm.validate((valid) => {
+          vm[formName].valid = valid
+        })
+        if (this.groupFormData.valid && vm[formName].valid) {
+          this.createMessage()
+          groupForm.resetFields()
+          messageForm.resetFields()
         }
       },
-      onCreateMessage () {
+      removeButton (item) {
+        const index = this.basicFormData.buttons.indexOf(item)
+        if (index !== -1) {
+          this.basicFormData.buttons.splice(index, 1)
+        }
+      },
+      removeAdvancedButton (item) {
+        const index = this.advancedFormData.buttons.indexOf(item)
+        if (index !== -1) {
+          this.advancedFormData.buttons.splice(index, 1)
+        }
+      },
+      addButton () {
+        this.basicFormData.buttons.push({
+          key: Date.now(),
+          title: '',
+          link: ''
+        })
+      },
+      addAdvancedButton () {
+        this.advancedFormData.buttons.push({
+          key: Date.now(),
+          title: '',
+          link: ''
+        })
+      },
+      handleRemove () {
+        this.advancedFormData.uploadVisible = true
+        this.advancedFormData.imageUrl = ''
+        setTimeout(() => {
+          document.getElementsByClassName('el-upload--picture-card')[0].style.setProperty('visibility', 'unset')
+        }, 500)
+      },
+      handlePictureCardPreview (file) {
+        this.advancedFormData.dialogImageUrl = file.url
+        this.advancedFormData.dialogVisible = true
+      },
+      handleChange (file) {
+        this.advancedFormData.imageUrl = file.url
+        document.getElementsByClassName('el-upload--picture-card')[0].style.setProperty('visibility', 'hidden')
+      },
+      createMessage () {
         const createMessageHandler = success => {
           if (success) {
             this.$message({message: 'Thêm tin nhắn thành công', type: 'success', showClose: true})
@@ -139,11 +217,23 @@
           }
         }
         if (this.$refs.messageTabs.currentName === 'basic') {
-          this.createNewBasicMessage(this.id).then(createMessageHandler)
+          this.createNewBasicMessage({
+            pageId: this.id,
+            message: this.basicFormData.message,
+            buttons: this.basicFormData.buttons
+          }).then(createMessageHandler)
         } else {
-          this.createNewAdvancedMessage(this.id).then(createMessageHandler)
+          this.createNewAdvancedMessage({
+            pageId: this.id,
+            title: this.advancedFormData.title,
+            subTitle: this.advancedFormData.subTitle,
+            buttons: this.advancedFormData.buttons
+          }).then(createMessageHandler)
         }
       }
+    },
+    created () {
+      this.getCustomerGroups(this.id)
     }
   }
 </script>
@@ -154,25 +244,33 @@
   }
 
   .customer-group-select {
-    width: 400px;
+    width: 315px;
+    vertical-align: middle;
   }
 
-  .image {
-    width: 146px;
-    height: 146px;
+  .formStyle {
+    width: 470px;
+  }
+
+  .formStyle .el-input {
+    width: 420px;
+  }
+
+  .upload {
+    height: 148px;
+  }
+
+  .subTitle .el-input {
+    margin-top: 22px;
   }
 
   .messages-tab {
-    width: 555px;
+    width: 470px;
     margin-top: 16px;
   }
 
-  .add-msg-button {
-    margin-top: 48px;
-  }
-
-  .message-titles {
-    margin-top: 16px;
+  .add-customer-group-button {
+    vertical-align: middle;
   }
 </style>
 
