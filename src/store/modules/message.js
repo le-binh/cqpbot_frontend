@@ -39,8 +39,10 @@ const actions = {
     commit(FINISH_CREATING_MESSAGE)
     return messageId !== undefined
   },
-  updateCreatedMessageId ({ commit }, id) {
-    commit(UPDATE_CREATED_MESSAGE_ID, { id })
+  async updateMessagePhoto ({ commit }, { messageId, file }) {
+    campaignApi.updateMessagePhoto(messageId, file).then(success => {
+      console.log('UPDATE MESSAGE PHOTO: ', success)
+    })
   }
 }
 

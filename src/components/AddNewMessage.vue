@@ -49,6 +49,7 @@
                   action="https://jsonplaceholder.typicode.com/posts/"
                   list-type="picture-card"
                   accept="image/*"
+                  ref="uploadForm"
                   :auto-upload="false"
                   :limit="1"
                   :on-preview="handlePictureCardPreview"
@@ -105,25 +106,18 @@
         },
         basicFormData: {
           message: '',
-          buttons: [{
-            key: Date.now(),
-            title: '',
-            link: ''
-          }],
+          buttons: [],
           valid: false
         },
         advancedFormData: {
-          buttons: [{
-            key: Date.now(),
-            title: '',
-            link: ''
-          }],
+          buttons: [],
           title: '',
           subTitle: '',
           dialogImageUrl: '',
           dialogVisible: false,
           uploadVisible: true,
           imageUrl: '',
+          photo: undefined,
           valid: false
         },
         rules: {
@@ -140,7 +134,8 @@
         filteredCustomerGroups: 'filteredCustomerGroups'
       }),
       ...mapState({
-        loading: state => state.customerGroup.loading
+        loading: state => state.customerGroup.loading,
+        messageId: state => state.message.id
       })
     },
     methods: {
@@ -148,23 +143,20 @@
         'searchGroup',
         'getCustomerGroups',
         'createNewBasicMessage',
-        'createNewAdvancedMessage'
+        'createNewAdvancedMessage',
+        'updateMessagePhoto'
       ]),
       onAddNewCustomerGroup: function () {
         this.$router.push({ name: 'AddNewCustomerGroup', params: { id: this.id } })
       },
       submitForm (formName) {
         const vm = this
-        const groupForm = this.$refs.groupFormData
-        const messageForm = this.$refs[formName]
-        groupForm.validate(valid => { vm.groupFormData.valid = valid })
-        messageForm.validate((valid) => {
+        this.$refs.groupFormData.validate(valid => { vm.groupFormData.valid = valid })
+        this.$refs[formName].validate(valid => {
           vm[formName].valid = valid
         })
         if (this.groupFormData.valid && vm[formName].valid) {
           this.createMessage()
-          groupForm.resetFields()
-          messageForm.resetFields()
         }
       },
       removeButton (item) {
@@ -196,6 +188,7 @@
       handleRemove () {
         this.advancedFormData.uploadVisible = true
         this.advancedFormData.imageUrl = ''
+        this.advancedFormData.photo = undefined
         setTimeout(() => {
           document.getElementsByClassName('el-upload--picture-card')[0].style.setProperty('visibility', 'unset')
         }, 500)
@@ -206,12 +199,23 @@
       },
       handleChange (file) {
         this.advancedFormData.imageUrl = file.url
+        this.advancedFormData.photo = file.raw
         document.getElementsByClassName('el-upload--picture-card')[0].style.setProperty('visibility', 'hidden')
       },
       createMessage () {
+        const vm = this
         const createMessageHandler = success => {
           if (success) {
-            this.$message({message: 'Thêm tin nhắn thành công', type: 'success', showClose: true})
+            vm.$message({message: 'Thêm tin nhắn thành công', type: 'success', showClose: true})
+            vm.$refs.basicFormData.resetFields()
+            vm.$refs.advancedFormData.resetFields()
+            vm.$refs.groupFormData.resetFields()
+            vm.basicFormData.buttons = []
+            vm.advancedFormData.buttons = []
+            vm.$refs.uploadForm.clearFiles()
+            setTimeout(() => {
+              document.getElementsByClassName('el-upload--picture-card')[0].style.setProperty('visibility', 'unset')
+            }, 600)
           } else {
             this.$message({message: 'Có lỗi xảy ra, vui lòng thử lại', type: 'error', showClose: true})
           }
@@ -223,12 +227,16 @@
             buttons: this.basicFormData.buttons
           }).then(createMessageHandler)
         } else {
+          const vm = this
           this.createNewAdvancedMessage({
             pageId: this.id,
             title: this.advancedFormData.title,
             subTitle: this.advancedFormData.subTitle,
             buttons: this.advancedFormData.buttons
-          }).then(createMessageHandler)
+          }).then(success => {
+            vm.updateMessagePhoto({ messageId: vm.messageId, file: vm.advancedFormData.photo })
+            createMessageHandler(success)
+          })
         }
       }
     },
