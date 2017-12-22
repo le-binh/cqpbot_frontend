@@ -1,17 +1,31 @@
 <template>
   <div>
-    <el-form label-position="top" :model="inbox" @submit.native.prevent>
-      <el-form-item class="form-item" label="Nếu khách hàng hỏi với các từ khoá">
-        <Tag :tags="inbox.keywords"/>
+    <el-form
+      label-position="left"
+      :model="inbox"
+      @submit.native.prevent
+      ref="inboxForm"
+      label-width="150px"
+      class="formStyle">
+      <el-form-item
+        label="Nếu khách hàng hỏi"
+        :rules="{required: true, message: 'Vui lòng nhập câu hỏi', trigger: 'blur'}"
+        prop="question">
+        <el-input v-model="inbox.question"></el-input>
       </el-form-item>
-      <el-form-item class="form-item" label="Thì Sena sẽ trả lời">
-        <el-input v-model="inbox.answer" type="textarea" :rows=3></el-input>
+      <el-form-item label="Thì Sena sẽ trả lời" required>
+        <el-form-item
+          v-for="(answer, index) in inbox.answers"
+          :prop="'answers.' + index + '.value'"
+          :rules="{required: true, message: 'Vui lòng nhập câu trả lời', trigger: 'blur'}"
+          :key="answer.key">
+          <el-input v-model="answer.value" type="textarea" :rows=2></el-input>
+          <el-button v-if="index !== 0" type="danger" icon="el-icon-delete" size="small" @click.prevent="removeAnswer(answer)"></el-button>
+        </el-form-item>
       </el-form-item>
-      <el-form-item class="form-item form-item-comment" label="Áp dụng cho cả comment">
-        <el-checkbox v-model="inbox.comment"></el-checkbox>
-      </el-form-item>
-      <el-form-item class="form-item form-item-submit">
-        <el-button type="primary" :disabled="submitDisabled" @click="onAddNewInbox">Thêm</el-button>
+      <el-form-item class="form-item-submit">
+        <el-button type="primary" @click="onAddNewInbox">Hoàn tất</el-button>
+        <el-button @click="addAnswer">Thêm câu trả lời</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -24,29 +38,37 @@
     data () {
       return {
         inbox: {
-          keywords: [],
-          answer: '',
-          comment: true
+          question: '',
+          answers: [{ key: Date.now(), value: '' }]
         }
-      }
-    },
-    computed: {
-      submitDisabled: function () {
-        const { keywords, answer } = this.inbox
-        return keywords.length === 0 || answer === ''
       }
     },
     methods: {
       onAddNewInbox: function () {
-        const { keywords, answer, comment } = this.inbox
-        this.clearInput()
-        this.$emit('addNewInbox', { keywords, answer, comment })
+        this.$refs.inboxForm.validate(valid => {
+          if (valid) {
+            const { question, answers } = this.inbox
+            this.clearInput()
+            this.$emit('addNewInbox', { question, answers })
+          }
+        })
       },
       clearInput: function () {
         this.inbox = {
-          keywords: [],
-          answer: '',
-          comment: true
+          question: '',
+          answers: [{ key: Date.now(), value: '' }]
+        }
+      },
+      addAnswer () {
+        this.inbox.answers.push({
+          key: Date.now(),
+          value: ''
+        })
+      },
+      removeAnswer (answer) {
+        const index = this.inbox.answers.indexOf(answer)
+        if (index !== -1) {
+          this.inbox.answers.splice(index, 1)
         }
       }
     }
@@ -54,18 +76,16 @@
 </script>
 
 <style scoped>
-  .form-item {
-    display: inline-block;
-    width: 400px;
-    vertical-align: top;
+  .formStyle {
+    width: 600px;
   }
 
-  .form-item-comment {
-    width: 150px;
-    text-align: center;
+  .formStyle .el-textarea {
+    width: 400px;
+    margin-top: 24px;
   }
 
   .form-item-submit {
-    display: block;
+    margin-top: 48px;
   }
 </style>
