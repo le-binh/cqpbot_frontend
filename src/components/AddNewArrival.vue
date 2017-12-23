@@ -63,7 +63,8 @@
           dialogImageUrl: '',
           dialogVisible: false,
           uploadVisible: true,
-          imageUrl: ''
+          imageUrl: '',
+          photo: undefined
         },
         rules: {
           imageUrl: [{required: true, message: 'Please upload a picture', trigger: 'blur,change'}],
@@ -79,7 +80,8 @@
     },
     methods: {
       ...mapActions([
-        'createNewArrival'
+        'createNewArrival',
+        'updateNewArrivalPhoto'
       ]),
       submitForm (formName) {
         const vm = this
@@ -105,6 +107,7 @@
       handleRemove () {
         this.formData.uploadVisible = true
         this.formData.imageUrl = ''
+        this.formData.photo = undefined
         setTimeout(() => {
           document.getElementsByClassName('el-upload--picture-card')[0].style.setProperty('visibility', 'unset')
         }, 500)
@@ -115,16 +118,18 @@
       },
       handleChange (file) {
         this.formData.imageUrl = file.url
+        this.formData.photo = file.raw
         document.getElementsByClassName('el-upload--picture-card')[0].style.setProperty('visibility', 'hidden')
       },
       async submitNewArrival () {
-        const success = await this.createNewArrival({
+        const newArrivalId = await this.createNewArrival({
           pageId: this.id,
           title: this.formData.title,
           subTitle: this.formData.subTitle,
           buttons: this.formData.buttons
         })
-        if (success) {
+        if (newArrivalId) {
+          this.updateNewArrivalPhoto({ id: newArrivalId, file: this.formData.photo })
           this.$message({message: 'Thêm tin hàng mới về thành công', type: 'success', showClose: true})
           this.$message({message: 'Thêm tin nhắn thành công', type: 'success', showClose: true})
           this.$refs.formData.resetFields()

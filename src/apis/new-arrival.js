@@ -1,6 +1,7 @@
 import axiosClient from './axios-client'
 import store from '../store'
-import { PAGE_PRODUCTS_ENDPOINT, PRODUCTS_ENDPOINT } from './endpoints'
+import { PAGE_PRODUCTS_ENDPOINT, PRODUCTS_ENDPOINT, PRODUCT_PHOTO_ENDPOINT } from './endpoints'
+import common from './common'
 
 const getNewArrivals = async (pageId) => {
   try {
@@ -42,7 +43,14 @@ const createNewArrival = async (params) => {
   } catch (e) {}
 }
 
+const updateNewArrivalPhoto = async (id, file) => {
+  const url = PRODUCT_PHOTO_ENDPOINT.replace('id', id)
+  const response = await common.uploadFile(url, file)
+  return response
+}
+
 export default {
   getNewArrivals,
-  createNewArrival
+  createNewArrival,
+  updateNewArrivalPhoto
 }

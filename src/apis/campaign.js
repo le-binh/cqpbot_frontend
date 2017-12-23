@@ -1,6 +1,7 @@
 import axiosClient from './axios-client'
 import { PAGE_MESSAGES_ENDPOINT, MESSAGE_ENDPOINT, MESSAGE_PHOTO_ENDPOINT } from './endpoints'
 import store from '../store'
+import common from './common'
 
 const getPageMessages = async (pageId) => {
   try {
@@ -40,25 +41,9 @@ const createMessage = async (params) => {
 }
 
 const updateMessagePhoto = async (id, file) => {
-  try {
-    const formData = new FormData()
-    formData.append('file', file)
-    const url = MESSAGE_PHOTO_ENDPOINT.replace('id', id)
-    const response = await axiosClient.put(url, formData, {
-      headers: {
-        Authorization: `Bearer ${store.state.auth.shopToken}`,
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    const responseData = response.data
-    if (responseData.meta.success) {
-      return true
-    } else {
-      return false
-    }
-  } catch (e) {
-    return false
-  }
+  const url = MESSAGE_PHOTO_ENDPOINT.replace('id', id)
+  const response = await common.uploadFile(url, file)
+  return response
 }
 
 export default {

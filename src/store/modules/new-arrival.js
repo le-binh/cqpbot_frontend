@@ -31,7 +31,12 @@ const actions = {
     commit(START_CREATING_NEW_ARRIVAL)
     const newArrival = await newArrivalApi.createNewArrival(requestData)
     commit(FINISH_CREATING_NEW_ARRIVAL)
-    return newArrival !== undefined
+    return newArrival ? newArrival['_id'] : undefined
+  },
+  async updateNewArrivalPhoto ({ commit }, { id, file }) {
+    newArrivalApi.updateNewArrivalPhoto(id, file).then(success => {
+      console.log('UPDATE NEW ARRIVAL PHOTO: ', success)
+    })
   }
 }
 

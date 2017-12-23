@@ -237,7 +237,9 @@
             groups: this.groupFormData.selectedCustomerGroups,
             buttons: this.advancedFormData.buttons
           }).then(success => {
-            vm.updateMessagePhoto({ messageId: vm.messageId, file: vm.advancedFormData.photo })
+            if (success) {
+              vm.updateMessagePhoto({ messageId: vm.messageId, file: vm.advancedFormData.photo })
+            }
             createMessageHandler(success)
           })
         }
