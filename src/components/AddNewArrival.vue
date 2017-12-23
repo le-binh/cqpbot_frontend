@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div class="wrapper" v-loading.fullscreen.lock="loading">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="120px" label-position="left" class="formStyle">
       <el-form-item label="Hình ảnh" prop="imageUrl">
         <div class="upload">
           <el-upload
             action="https://jsonplaceholder.typicode.com/posts/"
+            ref="uploadForm"
             list-type="picture-card"
             accept="image/*"
             :auto-upload="false"
@@ -48,16 +49,15 @@
   </div>
 </template>
 <script>
+  import { mapState, mapActions } from 'vuex'
+
   export default {
     name: 'AddNewArrival',
+    props: ['id'],
     data () {
       return {
         formData: {
-          buttons: [{
-            key: Date.now(),
-            title: '',
-            link: ''
-          }],
+          buttons: [],
           title: '',
           subTitle: '',
           dialogImageUrl: '',
@@ -72,14 +72,20 @@
         }
       }
     },
+    computed: {
+      ...mapState({
+        loading: state => state.newArrival.loading
+      })
+    },
     methods: {
+      ...mapActions([
+        'createNewArrival'
+      ]),
       submitForm (formName) {
+        const vm = this
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!')
-          } else {
-            console.log('error submit!!')
-            return false
+            vm.submitNewArrival()
           }
         })
       },
@@ -110,12 +116,37 @@
       handleChange (file) {
         this.formData.imageUrl = file.url
         document.getElementsByClassName('el-upload--picture-card')[0].style.setProperty('visibility', 'hidden')
+      },
+      async submitNewArrival () {
+        const success = await this.createNewArrival({
+          pageId: this.id,
+          title: this.formData.title,
+          subTitle: this.formData.subTitle,
+          buttons: this.formData.buttons
+        })
+        if (success) {
+          this.$message({message: 'Thêm tin hàng mới về thành công', type: 'success', showClose: true})
+          this.$message({message: 'Thêm tin nhắn thành công', type: 'success', showClose: true})
+          this.$refs.formData.resetFields()
+          this.formData.buttons = []
+          this.formData.buttons = []
+          this.$refs.uploadForm.clearFiles()
+          setTimeout(() => {
+            document.getElementsByClassName('el-upload--picture-card')[0].style.setProperty('visibility', 'unset')
+          }, 600)
+        } else {
+          this.$message({message: 'Có lỗi xảy ra, vui lòng thử lại', type: 'error', showClose: true})
+        }
       }
     }
   }
 </script>
 
 <style scoped>
+  .wrapper {
+    height: 100%;
+  }
+
   .formStyle {
     width: 600px;
   }

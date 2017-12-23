@@ -13,6 +13,7 @@
         <div>
           <a
             v-for="(button, buttonIndex) in newArrival.buttons"
+            class="new-arrival-button"
             :key="buttonIndex"
             :href="button.target">
             {{ button.text }}
@@ -62,6 +63,7 @@
 
   .new-arrival-item {
     width: 250px;
+    height: 320px;
     display: inline-block;
     margin-left: 32px;
     position: relative;
@@ -82,5 +84,9 @@
     right: 32px;
     padding: 20px;
     border-radius: 27px;
+  }
+
+  .new-arrival-button {
+    display: block;
   }
 </style>

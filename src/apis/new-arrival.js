@@ -1,10 +1,10 @@
 import axiosClient from './axios-client'
 import store from '../store'
-import { PRODUCTS_ENDPOINT } from './endpoints'
+import { PAGE_PRODUCTS_ENDPOINT, PRODUCTS_ENDPOINT } from './endpoints'
 
 const getNewArrivals = async (pageId) => {
   try {
-    const url = PRODUCTS_ENDPOINT.replace('pageId', pageId)
+    const url = PAGE_PRODUCTS_ENDPOINT.replace('pageId', pageId)
     const response = await axiosClient.get(
       url,
       {
@@ -26,6 +26,23 @@ const getNewArrivals = async (pageId) => {
   }
 }
 
+const createNewArrival = async (params) => {
+  try {
+    const response = await axiosClient.post(PRODUCTS_ENDPOINT, params,
+      {
+        headers: {
+          Authorization: `Bearer ${store.state.auth.shopToken}`
+        }
+      }
+    )
+    const responseData = response.data
+    if (responseData.meta.success) {
+      return responseData.data
+    }
+  } catch (e) {}
+}
+
 export default {
-  getNewArrivals
+  getNewArrivals,
+  createNewArrival
 }
