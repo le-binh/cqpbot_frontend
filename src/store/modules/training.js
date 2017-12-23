@@ -2,7 +2,7 @@ import {
   SAVE_NEW_INBOX, START_SAVING_NEW_INBOX, FINISH_SAVING_NEW_INBOX, START_LOADING_INBOXES,
   FINISH_LOADING_INBOXES, RECEIVE_LOADING_INBOXES
 } from '../mutation-types'
-import trainingApi from '../../apis/traning'
+import trainingApi from '../../apis/training'
 
 const dummyConfusingQuestions = [
   { id: 1, question: 'Foo Bar' },

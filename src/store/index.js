@@ -9,6 +9,7 @@ import training from './modules/training'
 import message from './modules/message'
 import addNewGroup from './modules/add-new-group'
 import pageDetail from './modules/page-detail'
+import newArrival from './modules/new-arrival'
 
 Vue.use(Vuex)
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     training,
     message,
     addNewGroup,
-    pageDetail
+    pageDetail,
+    newArrival
   }
 })
