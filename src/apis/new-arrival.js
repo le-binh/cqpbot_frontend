@@ -1,6 +1,8 @@
 import axiosClient from './axios-client'
 import store from '../store'
-import { PAGE_PRODUCTS_ENDPOINT, PRODUCTS_ENDPOINT, PRODUCT_PHOTO_ENDPOINT } from './endpoints'
+import {
+  PAGE_PRODUCTS_ENDPOINT, PRODUCTS_ENDPOINT, PRODUCT_PHOTO_ENDPOINT, PRODUCT_DETAIL_ENDPOINT
+} from './endpoints'
 import common from './common'
 
 const getNewArrivals = async (pageId) => {
@@ -43,6 +45,26 @@ const createNewArrival = async (params) => {
   } catch (e) {}
 }
 
+const deleteNewArrival = async (id) => {
+  try {
+    const url = PRODUCT_DETAIL_ENDPOINT.replace('id', id)
+    const response = await axiosClient.delete(url,
+      {
+        headers: {
+          Authorization: `Bearer ${store.state.auth.shopToken}`
+        }
+      }
+    )
+    const responseData = response.data
+    if (responseData.meta.success) {
+      return true
+    }
+    return false
+  } catch (e) {
+    return false
+  }
+}
+
 const updateNewArrivalPhoto = async (id, file) => {
   const url = PRODUCT_PHOTO_ENDPOINT.replace('id', id)
   const response = await common.uploadFile(url, file)
@@ -52,5 +74,6 @@ const updateNewArrivalPhoto = async (id, file) => {
 export default {
   getNewArrivals,
   createNewArrival,
-  updateNewArrivalPhoto
+  updateNewArrivalPhoto,
+  deleteNewArrival
 }

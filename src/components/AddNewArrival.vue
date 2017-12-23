@@ -42,14 +42,15 @@
         <el-button type="danger" icon="el-icon-delete" size="small" @click.prevent="removeButton(button)"></el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('formData')">Submit</el-button>
-        <el-button @click="addButton">Thêm nút</el-button>
+        <el-button type="primary" @click="submitForm('formData')">Hoàn tất</el-button>
+        <el-button @click="addButton" v-show="showsAddButton">Thêm nút</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
   import { mapState, mapActions } from 'vuex'
+  const BUTTONS_LIMIT = 3
 
   export default {
     name: 'AddNewArrival',
@@ -76,7 +77,10 @@
     computed: {
       ...mapState({
         loading: state => state.newArrival.loading
-      })
+      }),
+      showsAddButton: function () {
+        return this.formData.buttons.length < BUTTONS_LIMIT
+      }
     },
     methods: {
       ...mapActions([

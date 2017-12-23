@@ -1,8 +1,11 @@
 import {
   START_LOADING_NEW_ARRIVALS, FINISH_LOADING_NEW_ARRIVALS, RECEIVE_LOADING_NEW_ARRIVALS,
-  START_CREATING_NEW_ARRIVAL, FINISH_CREATING_NEW_ARRIVAL
+  START_CREATING_NEW_ARRIVAL, FINISH_CREATING_NEW_ARRIVAL, START_DELETING_NEW_ARRIVAL, FINISH_DELETING_NEW_ARRIVAL,
+  REMOVE_NEW_ARRIVAL
 } from '../mutation-types'
 import newArrivalApi from '../../apis/new-arrival'
+
+const NEW_ARRIVALS_LIMIT = 10
 
 const state = {
   loading: false,
@@ -10,7 +13,8 @@ const state = {
 }
 
 const getters = {
-  newArrivals: state => state.newArrivals
+  newArrivals: state => state.newArrivals,
+  canAddMoreNewArrival: state => state.newArrivals.length < NEW_ARRIVALS_LIMIT
 }
 
 const actions = {
@@ -37,6 +41,15 @@ const actions = {
     newArrivalApi.updateNewArrivalPhoto(id, file).then(success => {
       console.log('UPDATE NEW ARRIVAL PHOTO: ', success)
     })
+  },
+  async deleteNewArrival ({ commit }, id) {
+    commit(START_DELETING_NEW_ARRIVAL)
+    const success = await newArrivalApi.deleteNewArrival(id)
+    commit(FINISH_DELETING_NEW_ARRIVAL)
+    if (success) {
+      commit(REMOVE_NEW_ARRIVAL, id)
+    }
+    return success
   }
 }
 
@@ -55,6 +68,15 @@ const mutations = {
   },
   [FINISH_CREATING_NEW_ARRIVAL] (state) {
     state.loading = false
+  },
+  [START_DELETING_NEW_ARRIVAL] (state) {
+    state.loading = true
+  },
+  [FINISH_DELETING_NEW_ARRIVAL] (state) {
+    state.loading = false
+  },
+  [REMOVE_NEW_ARRIVAL] (state, id) {
+    state.newArrivals = state.newArrivals.filter(newArrival => newArrival['_id'] !== id)
   }
 }
 
