@@ -35,7 +35,7 @@ const getInboxes = async () => {
     )
     const responseData = response.data
     if (responseData.meta.success) {
-      return responseData.data
+      return responseData.data.data
     }
     return []
   } catch (e) {
