@@ -1,6 +1,19 @@
 <template>
   <div class="wrapper" v-loading.fullscreen.lock="loading">
-    <span class="guide">Chọn điều kiện để tạo nhóm khách hàng</span>
+    <el-form
+      label-position="left"
+      :model="formData"
+      @submit.native.prevent
+      ref="groupForm"
+      label-width="100px"
+      class="formStyle">
+      <el-form-item
+        label="Tên nhóm"
+        :rules="{required: true, message: 'Vui lòng nhập tên nhóm', trigger: 'change'}"
+        prop="title">
+        <el-input v-model="formData.title"></el-input>
+      </el-form-item>
+    </el-form>
     <el-tag
       :key="tag.key"
       v-for="tag in displayedCustomerGroupConditions"
@@ -20,7 +33,7 @@
         <Condition v-if="currentCondition !== undefined" :condition="currentCondition.key" @commit="updateCondition" @discard="discardCondition"/>
       </div>
     </div>
-    <el-button class="done-button" type="primary" @click="addNewCustomerGroup">Thêm</el-button>
+    <el-button class="done-button" type="primary" @click="handleAddNewCustomerGroup">Submit</el-button>
     <el-dialog
       title="Thông báo"
       :visible.sync="dialogVisible"
@@ -44,6 +57,9 @@
     props: ['id'],
     data () {
       return {
+        formData: {
+          title: ''
+        },
         conditions: [
           { key: 'name', title: 'Tên' },
           { key: 'gender', title: 'Giới tính' },
@@ -84,6 +100,19 @@
       discardCondition () {
         this.currentCondition = undefined
       },
+      handleAddNewCustomerGroup () {
+        const vm = this
+        const groupForm = this.$refs.groupForm
+        groupForm.validate(valid => {
+          if (valid) {
+            vm.addNewCustomerGroup().then(success => {
+              if (success) {
+                groupForm.resetFields()
+              }
+            })
+          }
+        })
+      },
       async addNewCustomerGroup () {
         const success = await this.createCustomerGroup(this.id)
         if (!success) {
@@ -91,6 +120,7 @@
         } else {
           this.$message({message: 'Có lỗi xảy ra, vui lòng thử lại', type: 'error', showClose: true})
         }
+        return success
       },
       finishAddingCustomerGroup () {
         this.$router.replace({ path: this.$route.query.redirect })
@@ -133,5 +163,9 @@
 
   .done-button {
     margin-top: 32px;
+  }
+
+  .formStyle {
+    width: 500px;
   }
 </style>
