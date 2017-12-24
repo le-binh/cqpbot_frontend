@@ -5,10 +5,10 @@
         <TrainingInbox :inboxes="inboxes" @saveNewInbox="handleSaveNewInbox"/>
       </el-tab-pane>
       <el-tab-pane label="Không hiểu">
-        <TrainingConfuse />
+        <TrainingNotUnderstand />
       </el-tab-pane>
       <el-tab-pane label="Nghi ngờ sena trả lời sai">
-        <TrainingDoubt />
+        <TrainingConfusing />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -17,15 +17,15 @@
   import { mapGetters, mapActions, mapState } from 'vuex'
 
   import TrainingInbox from './TrainingInbox.vue'
-  import TrainingConfuse from './TrainingConfuse.vue'
-  import TrainingDoubt from './TrainingDoubt.vue'
+  import TrainingNotUnderstand from './TrainingNotUnderstand.vue'
+  import TrainingConfusing from './TrainingConfusing.vue'
 
   export default {
     props: ['id'],
     components: {
       TrainingInbox,
-      TrainingConfuse,
-      TrainingDoubt
+      TrainingNotUnderstand,
+      TrainingConfusing
     },
     data () {
       return {

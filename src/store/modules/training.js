@@ -4,27 +4,27 @@ import {
 } from '../mutation-types'
 import trainingApi from '../../apis/training'
 
-const dummyConfusingQuestions = [
+const dummyNotUnderstandQuestions = [
   { id: 1, question: 'Foo Bar' },
   { id: 2, question: 'Foo Bar' },
   { id: 3, question: 'Foo Bar' }
 ]
 
-const dummyDoubtQuestions = [
-  { id: 1, question: 'Foo Bar', answer: 'Foo Bar', doubt: 'Foo Bar' }
+const dummyConfusingQuestions = [
+  { id: 1, question: 'Foo Bar', answer: 'Foo Bar', confuse: 'Foo Bar' }
 ]
 
 const state = {
   loading: false,
   inboxes: [],
-  confusingQuestions: [...dummyConfusingQuestions],
-  doubtQuestions: [...dummyDoubtQuestions]
+  notUnderstandQuestions: [...dummyNotUnderstandQuestions],
+  confusingQuestions: [...dummyConfusingQuestions]
 }
 
 const getters = {
   inboxes: state => state.inboxes,
-  confusingQuestions: state => state.confusingQuestions,
-  doubtQuestions: state => state.doubtQuestions
+  notUnderstandQuestions: state => state.notUnderstandQuestions,
+  confusingQuestions: state => state.confusingQuestions
 }
 
 const actions = {
