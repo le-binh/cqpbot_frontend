@@ -104,7 +104,6 @@
         }
       },
       async handleCreateNotUnderstandQuestion (question, answers) {
-        debugger
         const success = await this.createNotUnderstandQuestion({
           pageId: this.pageId, question: question, answers: answers.map(e => e.value)
         })

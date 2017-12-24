@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div v-show="isShowed" class="wrapper">
     <el-button :disabled="hasPrevious === false" round @click="handleClick('onLoadFirst')">Trang đầu</el-button>
     <el-button :disabled="hasPrevious === false" round @click="handleClick('onLoadPrevious')">Trang trước</el-button>
     <el-button :disabled="hasNext === false" round @click="handleClick('onLoadNext')">Trang sau</el-button>
@@ -9,6 +9,11 @@
 <script>
   export default {
     props: ['hasPrevious', 'hasNext'],
+    computed: {
+      isShowed () {
+        return this.hasPrevious || this.hasNext
+      }
+    },
     methods: {
       handleClick (event) {
         this.$emit(event)

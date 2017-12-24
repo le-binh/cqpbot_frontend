@@ -5,6 +5,7 @@
       :data="confusingQuestions"
       style="width: 100%"
       row-key="id"
+      empty-text="Chưa có dữ liệu"
       :expand-row-keys="expandingRowKeys"
       @expand-change="handleExpandChange">
       <el-table-column type="index" width="50"></el-table-column>
@@ -82,17 +83,27 @@
     },
     methods: {
       ...mapActions([
-        'getConfusingQuestions'
+        'getConfusingQuestions',
+        'updateQuestion'
       ]),
       handleAnswer: function (index, row) {
         this.expandingRowKeys = [row.id]
       },
       handleSubmitAnswer: function (index, row) {
         const vm = this
-        this.$refs.answerForm.validate(valid => {
+        const answerForm = this.$refs.answerForm
+        answerForm.validate(valid => {
           if (valid) {
-            vm.formData.answers = [{key: Date.now(), value: ''}]
-            vm.expandingRowKeys = []
+            vm.handleUpdateQuestion(row, vm.formData.answers).then(success => {
+              if (success) {
+                vm.formData.answers = [{key: Date.now(), value: ''}]
+                answerForm.resetFields()
+                vm.expandingRowKeys = []
+                vm.$message({message: 'Cập nhật câu trả lời thành công', type: 'success', showClose: true})
+              } else {
+                vm.$message({message: 'Có lỗi xảy ra, vui lòng thử lại', type: 'error', showClose: true})
+              }
+            })
           }
         })
       },
@@ -123,6 +134,12 @@
       },
       loadPreviousPage () {
         this.getConfusingQuestions({ page: this.currentConfusingQuestionsPage - 1 })
+      },
+      async handleUpdateQuestion (question, answers) {
+        const success = await this.updateQuestion({
+          id: question._id, question: question.question, answers: answers.map(e => e.value)
+        })
+        return success
       }
     },
     created () {

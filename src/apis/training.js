@@ -1,6 +1,6 @@
 import axiosClient from './axios-client'
 import store from '../store'
-import { QUESTIONS_ENDPOINT, CONFUSING_QUESTIONS_ENDPOINT } from './endpoints'
+import { QUESTIONS_ENDPOINT, CONFUSING_QUESTIONS_ENDPOINT, QUESTION_ENDPOINT } from './endpoints'
 import myPagesApi from './my-pages'
 
 const createQuestion = async (params) => {
@@ -27,6 +27,27 @@ const createNewInbox = async (pageId, question, answers) => {
 const createNotUnderstandQuestion = async (pageId, question, answers) => {
   const createdQuestion = await createQuestion({ pageId, question, answers, understand: true })
   return createdQuestion
+}
+
+const updateQuestion = async (id, question, answers) => {
+  try {
+    const url = QUESTION_ENDPOINT.replace('id', id)
+    const requestData = { question, answers }
+    const response = await axiosClient.put(url, requestData,
+      {
+        headers: {
+          Authorization: `Bearer ${store.state.auth.shopToken}`
+        }
+      }
+    )
+    const responseData = response.data
+    if (responseData.meta.success) {
+      return true
+    }
+    return false
+  } catch (e) {
+    return false
+  }
 }
 
 const getInboxes = async ({ page }) => {
@@ -81,5 +102,6 @@ export default {
   getInboxes,
   createNotUnderstandQuestion,
   getNotUnderstandQuestions,
-  getConfusingQuestions
+  getConfusingQuestions,
+  updateQuestion
 }

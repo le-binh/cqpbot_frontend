@@ -3,7 +3,8 @@ import {
   FINISH_LOADING_INBOXES, RECEIVE_NEW_INBOXES, START_LOADING_NOT_UNDERSTAND_QUESTIONS,
   FINISH_LOADING_NOT_UNDERSTAND_QUESTIONS, RECEIVE_NOT_UNDERSTAND_QUESTIONS, START_CREATING_NOT_UNDERSTAND_QUESTION,
   FINISH_CREATING_NOT_UNDERSTAND_QUESTION, UPDATE_NOT_UNDERSTAND_QUESTIONS, UPDATE_PAGINATION,
-  START_LOADING_CONFUSING_QUESTIONS, FINISH_LOADING_CONFUSING_QUESTIONS, RECEIVE_NEW_CONFUSING_QUESTIONS
+  START_LOADING_CONFUSING_QUESTIONS, FINISH_LOADING_CONFUSING_QUESTIONS, RECEIVE_NEW_CONFUSING_QUESTIONS,
+  START_UPDATING_CONFUSING_QUESTION, FINISH_UPDATING_CONFUSING_QUESTION, UPDATE_CONFUSING_QUESTIONS
 } from '../mutation-types'
 import trainingApi from '../../apis/training'
 
@@ -91,6 +92,16 @@ const actions = {
     if (response) {
       commit(RECEIVE_NEW_INBOXES, response.inboxes)
     }
+  },
+  async updateQuestion ({ commit, dispatch }, { id, question, answers }) {
+    commit(START_UPDATING_CONFUSING_QUESTION)
+    const success = await trainingApi.updateQuestion(id, question, answers)
+    commit(FINISH_UPDATING_CONFUSING_QUESTION)
+    if (success) {
+      dispatch('refreshInboxes')
+      commit(UPDATE_CONFUSING_QUESTIONS, id)
+    }
+    return success
   }
 }
 
@@ -142,6 +153,15 @@ const mutations = {
   },
   [UPDATE_PAGINATION] (state, { page, value }) {
     state.pagination[page] = value
+  },
+  [START_UPDATING_CONFUSING_QUESTION] (state) {
+    state.loading = true
+  },
+  [FINISH_UPDATING_CONFUSING_QUESTION] (state) {
+    state.loading = false
+  },
+  [UPDATE_CONFUSING_QUESTIONS] (state, id) {
+    state.confusingQuestions = state.confusingQuestions.filter(q => q._id !== id)
   }
 }
 
