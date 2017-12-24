@@ -46,14 +46,22 @@
         <el-button @click="addButton" v-show="showsAddButton">Thêm nút</el-button>
       </el-form-item>
     </el-form>
+    <AdvancedMessagePreview
+      :image="formData.imageUrl"
+      :title="formData.title"
+      :subTitle="formData.subTitle"
+      :buttons="formData.buttons"
+      :body-style="messagePreviewStyle"/>
   </div>
 </template>
 <script>
   import { mapState, mapActions } from 'vuex'
+  import AdvancedMessagePreview from '@/components/AdvancedMessagePreview'
   const BUTTONS_LIMIT = 3
 
   export default {
     name: 'AddNewArrival',
+    components: { AdvancedMessagePreview },
     props: ['id'],
     data () {
       return {
@@ -71,6 +79,11 @@
           imageUrl: [{required: true, message: 'Please upload a picture', trigger: 'blur,change'}],
           title: [{ required: true, message: 'Vui lòng nhập tiêu đề chính', trigger: 'change' }],
           subTitle: [{ required: true, message: 'Vui lòng nhập tiêu đề phụ', trigger: 'change' }]
+        },
+        messagePreviewStyle: {
+          position: 'absolute',
+          left: '800px',
+          top: '90px'
         }
       }
     },

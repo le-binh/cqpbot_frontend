@@ -94,7 +94,7 @@
       v-if="currentTab === 'basic'"
       :message="basicFormData.message"
       :buttons="basicFormData.buttons"
-      :body-style="basicPreviewMessageStyle"/>
+      :body-style="messagePreviewStyle"/>
 
     <AdvancedMessagePreview
       v-else
@@ -102,7 +102,7 @@
       :title="advancedFormData.title"
       :subTitle="advancedFormData.subTitle"
       :buttons="advancedFormData.buttons"
-      :body-style="basicPreviewMessageStyle"/>
+      :body-style="messagePreviewStyle"/>
   </div>
 </template>
 
@@ -146,7 +146,7 @@
           subTitle: [{ required: true, message: 'Vui lòng nhập tiêu đề phụ', trigger: 'change' }]
         },
         currentTab: 'basic',
-        basicPreviewMessageStyle: {
+        messagePreviewStyle: {
           position: 'absolute',
           left: '720px',
           top: '170px'
