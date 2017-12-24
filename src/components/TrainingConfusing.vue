@@ -1,51 +1,69 @@
 <template>
-  <el-table
-    ref="confusingQuestionsTable"
-    :data="confusingQuestions"
-    style="width: 100%"
-    row-key="id"
-    :expand-row-keys="expandingRowKeys"
-    @expand-change="handleExpandChange">
-    <el-table-column type="index" width="50"></el-table-column>
-    <el-table-column type="expand">
-      <template slot-scope="scope">
-        <el-form
-          ref="answerForm"
-          class="formStyle"
-          :model="formData">
-          <el-form-item>
-            <el-form-item
-              v-for="(answer, index) in formData.answers"
-              :prop="'answers.' + index + '.value'"
-              :rules="{required: true, message: 'Vui lòng nhập câu trả lời', trigger: 'change'}"
-              :key="answer.key">
-              <el-input v-model="answer.value" type="textarea" :rows=2></el-input>
-              <el-button v-if="index !== 0" type="danger" icon="el-icon-delete" size="small" @click.prevent="removeAnswer(answer)"></el-button>
+  <div class="wrapper">
+    <el-table
+      ref="confusingQuestionsTable"
+      :data="confusingQuestions"
+      style="width: 100%"
+      row-key="id"
+      :expand-row-keys="expandingRowKeys"
+      @expand-change="handleExpandChange">
+      <el-table-column type="index" width="50"></el-table-column>
+      <el-table-column type="expand">
+        <template slot-scope="scope">
+          <el-form
+            ref="answerForm"
+            class="formStyle"
+            :model="formData">
+            <el-form-item>
+              <el-form-item
+                v-for="(answer, index) in formData.answers"
+                :prop="'answers.' + index + '.value'"
+                :rules="{required: true, message: 'Vui lòng nhập câu trả lời', trigger: 'change'}"
+                :key="answer.key">
+                <el-input v-model="answer.value" type="textarea" :rows=2></el-input>
+                <el-button v-if="index !== 0" type="danger" icon="el-icon-delete" size="small" @click.prevent="removeAnswer(answer)"></el-button>
+              </el-form-item>
             </el-form-item>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="handleSubmitAnswer(scope.$index, scope.row)">Xong</el-button>
-            <el-button @click="addAnswer">Thêm câu trả lời</el-button>
-          </el-form-item>
-        </el-form>
-      </template>
-    </el-table-column>
-    <el-table-column label="Từ khách hàng hỏi" prop="question"></el-table-column>
-    <el-table-column label="Đã trả lời" prop="answer"></el-table-column>
-    <el-table-column label="Còn phân vân" prop="confuse"></el-table-column>
-    <el-table-column label="Hành động" width="200">
-      <template slot-scope="scope">
-        <el-button type="text" size="small">Đã trả lời đúng</el-button>
-        <el-button type="text" size="small" @click="handleAnswer(scope.$index, scope.row)">Dạy lại Sena</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+            <el-form-item>
+              <el-button type="primary" @click="handleSubmitAnswer(scope.$index, scope.row)">Xong</el-button>
+              <el-button @click="addAnswer">Thêm câu trả lời</el-button>
+            </el-form-item>
+          </el-form>
+        </template>
+      </el-table-column>
+      <el-table-column label="Từ khách hàng hỏi" prop="question"></el-table-column>
+      <el-table-column label="Đã trả lời">
+        <template slot-scope="scope">
+          <p v-for="(answer, index) in scope.row.answers">{{ answer }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column label="Còn phân vân">
+        <template slot-scope="scope">
+          <p v-for="(answer, index) in scope.row.confusing.answers">{{ answer }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column label="Hành động" width="200">
+        <template slot-scope="scope">
+          <el-button type="text" size="small">Đã trả lời đúng</el-button>
+          <el-button type="text" size="small" @click="handleAnswer(scope.$index, scope.row)">Dạy lại Sena</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <Pagination
+      :hasNext="hasNextConfusingQuestions"
+      :hasPrevious="hasPreviousConfusingQuestions"
+      @onLoadNext="loadNextPage"
+      @onLoadPrevious="loadPreviousPage"
+      @onLoadFirst="loadFirstPage"/>
+  </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
+  import Pagination from '@/components/Pagination'
 
   export default {
+    components: { Pagination },
     data () {
       return {
         expandingRowKeys: [],
@@ -55,11 +73,17 @@
       }
     },
     computed: {
-      ...mapGetters({
-        confusingQuestions: 'confusingQuestions'
-      })
+      ...mapGetters([
+        'confusingQuestions',
+        'hasNextConfusingQuestions',
+        'hasPreviousConfusingQuestions',
+        'currentConfusingQuestionsPage'
+      ])
     },
     methods: {
+      ...mapActions([
+        'getConfusingQuestions'
+      ]),
       handleAnswer: function (index, row) {
         this.expandingRowKeys = [row.id]
       },
@@ -90,7 +114,19 @@
         if (index !== -1) {
           this.formData.answers.splice(index, 1)
         }
+      },
+      loadFirstPage () {
+        this.getConfusingQuestions({ page: 0 })
+      },
+      loadNextPage () {
+        this.getConfusingQuestions({ page: this.currentConfusingQuestionsPage + 1 })
+      },
+      loadPreviousPage () {
+        this.getConfusingQuestions({ page: this.currentConfusingQuestionsPage - 1 })
       }
+    },
+    created () {
+      this.getConfusingQuestions({ page: 0 })
     }
   }
 </script>

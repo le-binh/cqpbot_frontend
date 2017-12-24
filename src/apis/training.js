@@ -1,6 +1,6 @@
 import axiosClient from './axios-client'
 import store from '../store'
-import { QUESTIONS_ENDPOINT } from './endpoints'
+import { QUESTIONS_ENDPOINT, CONFUSING_QUESTIONS_ENDPOINT } from './endpoints'
 import myPagesApi from './my-pages'
 
 const createQuestion = async (params) => {
@@ -45,7 +45,7 @@ const getInboxes = async ({ page }) => {
     )
     const responseData = response.data
     if (responseData.meta.success) {
-      return { isEnd: response.data.isEnd, inboxes: responseData.data.data }
+      return { isEnd: responseData.data.isEnd, inboxes: responseData.data.data }
     }
   } catch (e) {}
 }
@@ -56,9 +56,30 @@ const getNotUnderstandQuestions = async (pageId) => {
   return page.notUnderstandQuestions
 }
 
+const getConfusingQuestions = async ({ page }) => {
+  try {
+    const response = await axiosClient.get(
+      CONFUSING_QUESTIONS_ENDPOINT,
+      {
+        headers: {
+          Authorization: `Bearer ${store.state.auth.shopToken}`
+        },
+        params: {
+          page
+        }
+      }
+    )
+    const responseData = response.data
+    if (responseData.meta.success) {
+      return { isEnd: responseData.data.isEnd, questions: responseData.data.data }
+    }
+  } catch (e) {}
+}
+
 export default {
   createNewInbox,
   getInboxes,
   createNotUnderstandQuestion,
-  getNotUnderstandQuestions
+  getNotUnderstandQuestions,
+  getConfusingQuestions
 }

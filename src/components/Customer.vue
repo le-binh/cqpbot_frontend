@@ -23,7 +23,6 @@
         width="120">
         <template slot-scope="scope">
           <el-button type="text" size="small">Inbox</el-button>
-          <el-button type="text" size="small">Remove</el-button>
         </template>
       </el-table-column>
     </el-table>

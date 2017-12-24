@@ -37,7 +37,7 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('basicFormData')">Submit</el-button>
-              <el-button @click="addButton">Thêm nút</el-button>
+              <el-button @click="addButton" v-show="showsAddBasicButton">Thêm nút</el-button>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -84,7 +84,7 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('advancedFormData')">Submit</el-button>
-              <el-button @click="addAdvancedButton">Thêm nút</el-button>
+              <el-button @click="addAdvancedButton" v-show="showsAddAdvancedButton">Thêm nút</el-button>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -110,6 +110,8 @@
   import { mapGetters, mapActions, mapState } from 'vuex'
   import BasicMessagePreview from '@/components/BasicMessagePreview'
   import AdvancedMessagePreview from '@/components/AdvancedMessagePreview'
+
+  const BUTTONS_LIMIT = 3
 
   export default {
     props: ['id'],
@@ -158,7 +160,13 @@
       ...mapState({
         loading: state => state.customerGroup.loading,
         messageId: state => state.message.id
-      })
+      }),
+      showsAddBasicButton: function () {
+        return this.basicFormData.buttons.length < BUTTONS_LIMIT
+      },
+      showsAddAdvancedButton: function () {
+        return this.advancedFormData.buttons.length < BUTTONS_LIMIT
+      }
     },
     methods: {
       ...mapActions([

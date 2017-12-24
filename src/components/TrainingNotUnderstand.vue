@@ -4,6 +4,7 @@
     :data="notUnderstandQuestions"
     style="width: 100%"
     row-key="id"
+    empty-text="Chưa có dữ liệu"
     :expand-row-keys="expandingRowKeys"
     @expand-change="handleExpandChange">
     <el-table-column type="index" width="50"></el-table-column>

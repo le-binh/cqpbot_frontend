@@ -13,6 +13,14 @@
       <el-table-column prop="sent" label="Đã gửi" sortable></el-table-column>
       <el-table-column prop="read" label="Đã đọc" sortable></el-table-column>
       <el-table-column prop="clicked" label="Đã click" sortable></el-table-column>
+      <el-table-column
+        fixed="right"
+        label="Hành động"
+        width="120">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="handleSendMessage(scope.$index, scope.row)">Gửi tin nhắn</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-button type="primary" icon="el-icon-plus" class="button-add" @click="addNewMessage"></el-button>
   </div>
@@ -37,6 +45,9 @@
       ]),
       addNewMessage: function () {
         this.$router.push({ name: 'AddNewMessage' })
+      },
+      handleSendMessage (index, row) {
+        console.log('Send message', index, row)
       }
     },
     created () {
