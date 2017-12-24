@@ -6,11 +6,16 @@
         :key="index"
         :body-style="{ padding: '0' }"
         class="new-arrival-item">
-        <div v-show="newArrival.isOutOfStock" class="out-of-stock"><span class="out-of-stock-text">OUT</span></div>
-        <img :src="newArrival.image" class="new-arrival-image">
-        <div>
-         <p class="title">{{ newArrival.title }}</p>
-         <p class="subtitle">{{ newArrival.subTitle }}</p>
+        <div class="overlay-hoverable">
+          <div v-show="newArrival.isOutOfStock" class="out-of-stock"><span class="out-of-stock-text">OUT</span></div>
+          <img :src="newArrival.image" class="new-arrival-image">
+          <div>
+            <p class="title">{{ newArrival.title }}</p>
+            <p class="subtitle">{{ newArrival.subTitle }}</p>
+          </div>
+          <div class="action-overlay">
+            <el-button icon="el-icon-delete" size="medium" round @click="onDeleteNewArrival(newArrival)"></el-button>
+          </div>
         </div>
         <div>
           <a
@@ -20,9 +25,6 @@
             :href="button.target">
             {{ button.text }}
           </a>
-        </div>
-        <div class="action-overlay">
-          <el-button icon="el-icon-delete" size="medium" round @click="onDeleteNewArrival(newArrival)"></el-button>
         </div>
       </el-card>
     </div>
@@ -185,7 +187,7 @@
     align-items: center;
   }
 
-  .new-arrival-item:hover .action-overlay {
+  .overlay-hoverable:hover > .action-overlay {
     display: flex;
   }
 </style>
