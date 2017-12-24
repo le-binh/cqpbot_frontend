@@ -21,7 +21,7 @@
     </el-form>
 
     <div class="messages-tab">
-      <el-tabs type="card" ref="messageTabs" value="basic">
+      <el-tabs type="card" ref="messageTabs" value="basic" @tab-click="handleTableClick">
         <el-tab-pane label="Cơ bản" name="basic">
           <el-form :model="basicFormData" :rules="rules" ref="basicFormData" label-width="0" label-position="left" class="formStyle">
             <el-form-item prop="message">
@@ -90,14 +90,30 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+    <BasicMessagePreview
+      v-if="currentTab === 'basic'"
+      :message="basicFormData.message"
+      :buttons="basicFormData.buttons"
+      :body-style="basicPreviewMessageStyle"/>
+
+    <AdvancedMessagePreview
+      v-else
+      :image="advancedFormData.imageUrl"
+      :title="advancedFormData.title"
+      :subTitle="advancedFormData.subTitle"
+      :buttons="advancedFormData.buttons"
+      :body-style="basicPreviewMessageStyle"/>
   </div>
 </template>
 
 <script>
   import { mapGetters, mapActions, mapState } from 'vuex'
+  import BasicMessagePreview from '@/components/BasicMessagePreview'
+  import AdvancedMessagePreview from '@/components/AdvancedMessagePreview'
 
   export default {
     props: ['id'],
+    components: { BasicMessagePreview, AdvancedMessagePreview },
     data () {
       return {
         groupFormData: {
@@ -126,6 +142,12 @@
           imageUrl: [{required: true, message: 'Please upload a picture', trigger: 'blur,change'}],
           title: [{ required: true, message: 'Vui lòng nhập tiêu đề chính', trigger: 'change' }],
           subTitle: [{ required: true, message: 'Vui lòng nhập tiêu đề phụ', trigger: 'change' }]
+        },
+        currentTab: 'basic',
+        basicPreviewMessageStyle: {
+          position: 'absolute',
+          left: '720px',
+          top: '170px'
         }
       }
     },
@@ -243,6 +265,9 @@
             createMessageHandler(success)
           })
         }
+      },
+      handleTableClick (tab) {
+        this.currentTab = tab.name
       }
     },
     created () {
@@ -263,6 +288,7 @@
 
   .formStyle {
     width: 470px;
+    display: inline-block;
   }
 
   .formStyle .el-input {
