@@ -27,12 +27,6 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="pagination">
-      <el-pagination
-        layout="prev, pager, next"
-        :total="1000">
-      </el-pagination>
-    </div>
     <el-button type="primary" icon="el-icon-plus" class="button-add" @click="addNewMessage"></el-button>
   </div>
 </template>
@@ -84,5 +78,6 @@
     right: 32px;
     padding: 20px;
     border-radius: 27px;
+    z-index: 10;
   }
 </style>

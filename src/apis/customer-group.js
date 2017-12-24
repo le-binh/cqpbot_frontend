@@ -21,9 +21,9 @@ const getCustomerGroups = async (pageId) => {
   }
 }
 
-const createCustomerGroup = async (pageId, conditions) => {
+const createCustomerGroup = async (pageId, title, conditions) => {
   try {
-    const response = await axiosClient.post(CUSTOMER_GROUPS_ENDPOINT, { pageId, title: 'fucking title', conditions }, {
+    const response = await axiosClient.post(CUSTOMER_GROUPS_ENDPOINT, { pageId, title, conditions }, {
       headers: {
         Authorization: `Bearer ${store.state.auth.shopToken}`
       }

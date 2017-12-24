@@ -12,17 +12,35 @@ const parsingGroupCondition = (condition) => {
 const normalizeCustomerGroupsForDisplay = (groups) => {
   return groups.map(group => {
     return {
+      ...normalizeGroupsConditions(group.conditions),
       id: group._id,
-      groupName: group.title,
-      customerName: group.conditions.name ? `Chứa ${group.conditions.name}` : '',
-      gender: genderDict[group.conditions.gender || 'all'],
-      like: 0,
-      lastInteraction: group.conditions.lastInteract ? `${group.conditions.lastInteract} ngày` : '',
-      comments: group.conditions.comments ? parsingGroupCondition(group.conditions.comments) : '',
-      inbox: group.conditions.inbox ? parsingGroupCondition(group.conditions.inbox) : '',
-      reactions: group.conditions.reactions ? parsingGroupCondition(group.conditions.reactions) : ''
+      groupName: group.title
     }
   })
+}
+
+const normalizeGroupsConditions = conditions => {
+  if (conditions === undefined) {
+    return {
+      customerName: '',
+      gender: '',
+      like: '',
+      lastInteraction: '',
+      comments: '',
+      inbox: '',
+      reactions: ''
+    }
+  } else {
+    return {
+      customerName: conditions.name ? `Chứa ${conditions.name}` : '',
+      gender: genderDict[conditions.gender || 'all'],
+      like: '',
+      lastInteraction: conditions.lastInteract ? `${conditions.lastInteract} ngày` : '',
+      comments: conditions.comments ? parsingGroupCondition(conditions.comments) : '',
+      inbox: conditions.inbox ? parsingGroupCondition(conditions.inbox) : '',
+      reactions: conditions.reactions ? parsingGroupCondition(conditions.reactions) : ''
+    }
+  }
 }
 
 const state = {

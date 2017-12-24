@@ -85,7 +85,8 @@
       ...mapActions([
         'addNewCondition',
         'deleteCondition',
-        'createCustomerGroup'
+        'createCustomerGroup',
+        'clearAllConditions'
       ]),
       handleClose (conditionKey) {
         this.deleteCondition(conditionKey)
@@ -108,14 +109,15 @@
             vm.addNewCustomerGroup().then(success => {
               if (success) {
                 groupForm.resetFields()
+                vm.clearAllConditions()
               }
             })
           }
         })
       },
       async addNewCustomerGroup () {
-        const success = await this.createCustomerGroup(this.id)
-        if (!success) {
+        const success = await this.createCustomerGroup({ pageId: this.id, title: this.formData.title })
+        if (success) {
           this.dialogVisible = true
         } else {
           this.$message({message: 'Có lỗi xảy ra, vui lòng thử lại', type: 'error', showClose: true})
