@@ -11,33 +11,12 @@ const getters = {
 }
 
 const actions = {
-  getAllCustomers ({ commit }) {
+  getAllCustomers ({ commit }, pageId) {
     commit(START_LOADING_CUSTOMERS)
-    getCustomers().then(customers => {
-      commit(FINISH_LOADING_CUSTOMERS)
+    getCustomers(pageId).then(customers => {
       console.log(customers)
-      const dummyCustomers = [{
-        name: 'Cristano Ronaldo',
-        like: 1000,
-        comments: 500,
-        inbox: 10000,
-        batchNews: 950,
-        read: 900,
-        clicks: 500,
-        react: 249,
-        lastInteraction: '3 ngày trước'
-      }, {
-        name: 'Cristano Ronaldo',
-        like: 1000,
-        comments: 500,
-        inbox: 10000,
-        batchNews: 950,
-        read: 900,
-        clicks: 500,
-        react: 249,
-        lastInteraction: '3 ngày trước'
-      }]
-      commit(RECEIVE_ALL_CUSTOMERS, { customers: dummyCustomers })
+      commit(FINISH_LOADING_CUSTOMERS)
+      commit(RECEIVE_ALL_CUSTOMERS, { customers })
     })
   }
 }

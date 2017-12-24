@@ -1,10 +1,11 @@
 import axiosClient from './axios-client'
-import { CUSTOMERS_ENDPOINT } from './endpoints'
+import { PAGE_MEMBERS_ENDPOINT } from './endpoints'
 import store from '../store'
 
-export const getCustomers = async () => {
+export const getCustomers = async (pageId) => {
   try {
-    const response = await axiosClient.get(CUSTOMERS_ENDPOINT, {
+    const url = PAGE_MEMBERS_ENDPOINT.replace('pageId', pageId)
+    const response = await axiosClient.get(url, {
       headers: {
         Authorization: `Bearer ${store.state.auth.shopToken}`
       }
