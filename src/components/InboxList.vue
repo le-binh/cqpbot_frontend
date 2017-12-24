@@ -14,14 +14,29 @@
         </template>
       </el-table-column>
     </el-table>
+    <Pagination
+      :hasNext="hasNextInboxes"
+      :hasPrevious="hasPreviousInboxes"
+      @onLoadNext="loadNextPage"
+      @onLoadPrevious="loadPreviousPage"
+      @onLoadFirst="loadFirstPage"/>
   </div>
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex'
+  import Pagination from '@/components/Pagination'
+
   export default {
     name: 'InboxList',
     props: ['inboxes'],
+    components: { Pagination },
     computed: {
+      ...mapGetters([
+        'hasNextInboxes',
+        'hasPreviousInboxes',
+        'currentInboxesPage'
+      ]),
       displayedInboxes: function () {
         return this.inboxes.map(({ question, answers }) => {
           return {
@@ -29,6 +44,20 @@
             answers
           }
         })
+      }
+    },
+    methods: {
+      ...mapActions([
+        'getInboxes'
+      ]),
+      loadFirstPage () {
+        this.getInboxes({ page: 0 })
+      },
+      loadNextPage () {
+        this.getInboxes({ page: this.currentInboxesPage + 1 })
+      },
+      loadPreviousPage () {
+        this.getInboxes({ page: this.currentInboxesPage - 1 })
       }
     }
   }

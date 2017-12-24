@@ -5,7 +5,7 @@
         <TrainingInbox :inboxes="inboxes" @saveNewInbox="handleSaveNewInbox"/>
       </el-tab-pane>
       <el-tab-pane label="Không hiểu">
-        <TrainingNotUnderstand />
+        <TrainingNotUnderstand :pageId="id"/>
       </el-tab-pane>
       <el-tab-pane label="Nghi ngờ sena trả lời sai">
         <TrainingConfusing />
@@ -58,7 +58,7 @@
       }
     },
     created () {
-      this.getInboxes()
+      this.getInboxes({ page: 0 })
     }
   }
 </script>

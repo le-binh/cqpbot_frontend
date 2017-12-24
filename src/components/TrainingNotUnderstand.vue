@@ -40,9 +40,10 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
+    props: ['pageId'],
     data () {
       return {
         expandingRowKeys: [],
@@ -57,15 +58,28 @@
       })
     },
     methods: {
+      ...mapActions([
+        'getNotUnderstandQuestions',
+        'createNotUnderstandQuestion'
+      ]),
       handleAnswer: function (index, row) {
         this.expandingRowKeys = [row.id]
       },
       handleSubmitAnswer: function (index, row) {
         const vm = this
-        this.$refs.answerForm.validate(valid => {
+        const answerForm = this.$refs.answerForm
+        answerForm.validate(valid => {
           if (valid) {
-            vm.formData.answers = [{key: Date.now(), value: ''}]
-            vm.expandingRowKeys = []
+            vm.handleCreateNotUnderstandQuestion(row, vm.formData.answers).then(success => {
+              if (success) {
+                vm.formData.answers = [{key: Date.now(), value: ''}]
+                answerForm.resetFields()
+                vm.expandingRowKeys = []
+                vm.$message({message: 'Thêm câu trả lời thành công', type: 'success', showClose: true})
+              } else {
+                vm.$message({message: 'Có lỗi xảy ra, vui lòng thử lại', type: 'error', showClose: true})
+              }
+            })
           }
         })
       },
@@ -87,7 +101,17 @@
         if (index !== -1) {
           this.formData.answers.splice(index, 1)
         }
+      },
+      async handleCreateNotUnderstandQuestion (question, answers) {
+        debugger
+        const success = await this.createNotUnderstandQuestion({
+          pageId: this.pageId, question: question, answers: answers.map(e => e.value)
+        })
+        return success
       }
+    },
+    created () {
+      this.getNotUnderstandQuestions(this.pageId)
     }
   }
 </script>

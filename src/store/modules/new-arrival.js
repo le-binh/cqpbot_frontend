@@ -1,5 +1,5 @@
 import {
-  START_LOADING_NEW_ARRIVALS, FINISH_LOADING_NEW_ARRIVALS, RECEIVE_LOADING_NEW_ARRIVALS,
+  START_LOADING_NEW_ARRIVALS, FINISH_LOADING_NEW_ARRIVALS, RECEIVE_NEW_ARRIVALS,
   START_CREATING_NEW_ARRIVAL, FINISH_CREATING_NEW_ARRIVAL, START_DELETING_NEW_ARRIVAL, FINISH_DELETING_NEW_ARRIVAL,
   REMOVE_NEW_ARRIVAL
 } from '../mutation-types'
@@ -22,7 +22,7 @@ const actions = {
     commit(START_LOADING_NEW_ARRIVALS)
     const newArrivals = await newArrivalApi.getNewArrivals(pageId)
     commit(FINISH_LOADING_NEW_ARRIVALS)
-    commit(RECEIVE_LOADING_NEW_ARRIVALS, newArrivals)
+    commit(RECEIVE_NEW_ARRIVALS, newArrivals)
   },
   async createNewArrival ({ commit }, { pageId, title, subTitle, buttons }) {
     const requestData = {
@@ -60,7 +60,7 @@ const mutations = {
   [FINISH_LOADING_NEW_ARRIVALS] (state) {
     state.loading = false
   },
-  [RECEIVE_LOADING_NEW_ARRIVALS] (state, newArrivals) {
+  [RECEIVE_NEW_ARRIVALS] (state, newArrivals) {
     state.newArrivals = newArrivals
   },
   [START_CREATING_NEW_ARRIVAL] (state) {
