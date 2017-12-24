@@ -1,5 +1,5 @@
 import { FINISH_LOADING_CUSTOMERS, RECEIVE_ALL_CUSTOMERS, START_LOADING_CUSTOMERS } from '../mutation-types'
-import { getCustomers } from '../../apis/customer'
+import customerApi from '../../apis/customer'
 
 const state = {
   customers: [],
@@ -11,13 +11,11 @@ const getters = {
 }
 
 const actions = {
-  getAllCustomers ({ commit }, pageId) {
+  async getCustomers ({ commit }, pageId) {
     commit(START_LOADING_CUSTOMERS)
-    getCustomers(pageId).then(customers => {
-      console.log(customers)
-      commit(FINISH_LOADING_CUSTOMERS)
-      commit(RECEIVE_ALL_CUSTOMERS, { customers })
-    })
+    const customers = await customerApi.getCustomers(pageId)
+    commit(FINISH_LOADING_CUSTOMERS)
+    commit(RECEIVE_ALL_CUSTOMERS, { customers })
   }
 }
 

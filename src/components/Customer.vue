@@ -34,6 +34,7 @@
   import { mapGetters, mapActions, mapState } from 'vuex'
 
   export default {
+    props: ['id'],
     computed: {
       ...mapGetters({
         customers: 'customers'
@@ -44,14 +45,14 @@
     },
     methods: {
       ...mapActions([
-        'getAllCustomers'
+        'getCustomers'
       ]),
       handleRowClicked: function (row) {
         console.log(`Clicked row ${row}`)
       }
     },
     created () {
-      this.getAllCustomers()
+      this.getCustomers(this.id)
     }
   }
 </script>
