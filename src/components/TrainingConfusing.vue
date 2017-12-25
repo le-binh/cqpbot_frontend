@@ -46,7 +46,7 @@
       <el-table-column label="Hành động" width="200">
         <template slot-scope="scope">
           <el-button type="text" size="small">Đã trả lời đúng</el-button>
-          <el-button type="text" size="small" @click="handleAnswer(scope.$index, scope.row)">Dạy lại Sena</el-button>
+          <el-button type="text" size="small" @click="handleAnswer(scope.$index, scope.row)">Dạy lại Misena</el-button>
         </template>
       </el-table-column>
     </el-table>

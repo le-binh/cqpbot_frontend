@@ -13,7 +13,7 @@
         prop="question">
         <el-input v-model="inbox.question"></el-input>
       </el-form-item>
-      <el-form-item label="Thì Sena sẽ trả lời" required>
+      <el-form-item label="Thì Misena sẽ trả lời" required>
         <el-form-item
           v-for="(answer, index) in inbox.answers"
           :prop="'answers.' + index + '.value'"

@@ -7,7 +7,7 @@
       <el-tab-pane label="Không hiểu">
         <TrainingNotUnderstand :pageId="id"/>
       </el-tab-pane>
-      <el-tab-pane label="Nghi ngờ sena trả lời sai">
+      <el-tab-pane label="Nghi ngờ Misena trả lời sai">
         <TrainingConfusing />
       </el-tab-pane>
     </el-tabs>
