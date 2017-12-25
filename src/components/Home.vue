@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <span class="welcome-title">Chào mừng đến với ứng dụng Autobot</span>
+    <span class="welcome-title">Chào mừng đến với ứng dụng Misena</span>
     <el-button class="use-app-button" type="primary" @click="startUsingApp">Sử dụng ứng dụng ngay</el-button>
   </div>
 </template>
