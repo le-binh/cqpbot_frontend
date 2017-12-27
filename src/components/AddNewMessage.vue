@@ -28,12 +28,26 @@
               <el-input placeholder="Nội dung tin nhắn" type="textarea" :rows="3" v-model="basicFormData.message"></el-input>
             </el-form-item>
             <el-form-item
-              v-for="(button, index) in basicFormData.buttons"
               :key="button.key"
+              v-for="(button, index) in basicFormData.buttons"
+              required
             >
-              <el-input v-model="button.title" placeholder="Tiêu đề cho nút"></el-input>
-              <el-input v-model="button.link" placeholder="Link khi click vào nút"></el-input>
-              <el-button type="danger" icon="el-icon-delete" size="small" @click.prevent="removeButton(button)"></el-button>
+              <el-form-item
+                :prop="'buttons.' + index + '.title'"
+                :rules="{ required: true, message: 'Vui lòng nhập tiêu đề cho nút', trigger: 'blur' }"
+              >
+                <el-input v-model="button.title" placeholder="Tiêu đề cho nút"></el-input>
+              </el-form-item>
+              <el-form-item
+                :prop="'buttons.' + index + '.link'"
+                :rules="{
+                  required: true, message: 'Vui lòng nhập link cho nút', trigger: 'blur',
+                  type: 'url', message: 'Vui lòng nhập link đúng định dạng', trigger: 'blur'
+                }"
+              >
+                <el-input class="button-link" v-model="button.link" placeholder="Link khi click vào nút"></el-input>
+                <el-button type="danger" icon="el-icon-delete" size="small" @click.prevent="removeButton(button)"></el-button>
+              </el-form-item>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('basicFormData')">Submit</el-button>
@@ -75,12 +89,26 @@
               </div>
             </el-form-item>
             <el-form-item
-              v-for="(button, index) in advancedFormData.buttons"
               :key="button.key"
+              v-for="(button, index) in advancedFormData.buttons"
+              required
             >
-              <el-input v-model="button.title" placeholder="Tiêu đề cho nút"></el-input>
-              <el-input v-model="button.link" placeholder="Link khi click vào nút"></el-input>
-              <el-button type="danger" icon="el-icon-delete" size="small" @click.prevent="removeAdvancedButton(button)"></el-button>
+              <el-form-item
+                :prop="'buttons.' + index + '.title'"
+                :rules="{ required: true, message: 'Vui lòng nhập tiêu đề cho nút', trigger: 'blur' }"
+              >
+                <el-input v-model="button.title" placeholder="Tiêu đề cho nút"></el-input>
+              </el-form-item>
+              <el-form-item
+                :prop="'buttons.' + index + '.link'"
+                :rules="{
+                  required: true, message: 'Vui lòng nhập link cho nút', trigger: 'blur',
+                  type: 'url', message: 'Vui lòng nhập link đúng định dạng', trigger: 'blur'
+                }"
+              >
+                <el-input class="button-link" v-model="button.link" placeholder="Link khi click vào nút"></el-input>
+                <el-button type="danger" icon="el-icon-delete" size="small" @click.prevent="removeAdvancedButton(button)"></el-button>
+              </el-form-item>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('advancedFormData')">Submit</el-button>
@@ -318,6 +346,10 @@
 
   .add-customer-group-button {
     vertical-align: middle;
+  }
+
+  .button-link {
+    margin-top: 22px;
   }
 </style>
 
