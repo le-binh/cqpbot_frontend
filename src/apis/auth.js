@@ -3,16 +3,20 @@ import { FB_LOGIN_ENDPOINT } from './endpoints'
 
 export const sendCredentials = async (token, userID) => {
   try {
-    console.log(token)
-    console.log(userID)
     const response = await axiosClient.post(FB_LOGIN_ENDPOINT, {
       token: token,
       fbAppId: userID
     })
     const responseData = response.data
     if (responseData.meta.success) {
-      console.log(responseData.data.token)
-      return responseData.data.token
+      const { token, _id, avatar } = responseData.data
+      return {
+        userInfo: {
+          id: _id,
+          avatar
+        },
+        token
+      }
     }
   } catch (e) {}
 }

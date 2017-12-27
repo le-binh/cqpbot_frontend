@@ -1,6 +1,6 @@
 import {
   CLEAR_SHOP_TOKEN, SAVE_SHOP_TOKEN, START_CHECKING_LOGIN_STATUS, FINISH_CHECKING_LOGIN_STATUS,
-  START_LOGIN, FINISH_LOGIN
+  START_LOGIN, FINISH_LOGIN, SAVE_USER_INFO
 } from '../mutation-types'
 import { fbLogin, fbCheckLoginStatus } from '../../utils/facebook'
 import { sendCredentials } from '../../apis/auth'
@@ -8,12 +8,17 @@ import { sendCredentials } from '../../apis/auth'
 const state = {
   shopToken: undefined,
   loggingIn: false,
-  checkingLoginStatus: true
+  checkingLoginStatus: true,
+  userInfo: {
+    id: undefined,
+    avatar: ''
+  }
 }
 
 const getters = {
   isLoggedIn: state => state.shopToken !== undefined,
-  loading: state => state.loggingIn || state.checkingLoginStatus
+  loading: state => state.loggingIn || state.checkingLoginStatus,
+  userAvatar: state => state.userInfo.avatar
 }
 
 const actions = {
@@ -25,12 +30,13 @@ const actions = {
       return false
     }
     const [accessToken, userID] = response
-    const shopToken = await sendCredentials(accessToken, userID)
-    if (!shopToken) {
+    const sendCredentialsResponse = await sendCredentials(accessToken, userID)
+    if (!sendCredentialsResponse) {
       commit(FINISH_LOGIN)
       return false
     }
-    commit(SAVE_SHOP_TOKEN, { shopToken })
+    commit(SAVE_SHOP_TOKEN, { shopToken: sendCredentialsResponse.token })
+    commit(SAVE_USER_INFO, { userInfo: sendCredentialsResponse.userInfo })
     commit(FINISH_LOGIN)
     return true
   },
@@ -43,14 +49,19 @@ const actions = {
       return false
     }
     const [accessToken, userID] = response
-    const shopToken = await sendCredentials(accessToken, userID)
-    if (!shopToken) {
+    const sendCredentialsResponse = await sendCredentials(accessToken, userID)
+    if (!sendCredentialsResponse) {
       commit(FINISH_CHECKING_LOGIN_STATUS)
       return false
     }
-    commit(SAVE_SHOP_TOKEN, { shopToken })
+    commit(SAVE_SHOP_TOKEN, { shopToken: sendCredentialsResponse.token })
+    commit(SAVE_USER_INFO, { userInfo: sendCredentialsResponse.userInfo })
     commit(FINISH_CHECKING_LOGIN_STATUS)
     return true
+  },
+
+  logout ({ commit }) {
+    commit(CLEAR_SHOP_TOKEN)
   }
 }
 
@@ -79,6 +90,9 @@ const mutations = {
 
   [FINISH_CHECKING_LOGIN_STATUS] (state) {
     state.checkingLoginStatus = false
+  },
+  [SAVE_USER_INFO] (state, { userInfo }) {
+    state.userInfo = userInfo
   }
 }
 

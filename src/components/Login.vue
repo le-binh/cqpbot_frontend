@@ -26,7 +26,12 @@
         'login'
       ]),
       loginClicked () {
-        this.login().then(this.redirectOrShowError)
+        const vm = this
+        this.login().then(success => {
+          if (success) {
+            vm.$router.replace({path: '/pages'})
+          }
+        })
       },
       waitForFBToCheckLoginStatus () {
         if (isFBLoaded) {
@@ -39,7 +44,10 @@
       },
       redirectOrShowError (success) {
         if (success) {
-          this.$router.replace({path: this.$route.query.redirect || '/pages'})
+          const redirectPath = this.$route.query.redirect
+          if (redirectPath) {
+            this.$router.replace({path: redirectPath})
+          }
         }
       }
     },
