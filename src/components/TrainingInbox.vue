@@ -1,10 +1,10 @@
 <template>
-  <div class="wrapper">
-    <div class="add-new-inbox">
+  <div>
+    <div>
       <AddNewInbox @addNewInbox="handleAddNewInbox"/>
     </div>
     <div class="inbox-list">
-      <InboxList :inboxes="inboxes"/>
+      <InboxList :pageId="pageId" :inboxes="inboxes"/>
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@
 
   export default {
     name: 'TrainingInbox',
-    props: ['inboxes'],
+    props: ['inboxes', 'pageId'],
     components: { AddNewInbox, InboxList },
     methods: {
       handleAddNewInbox: function (inbox) {
@@ -26,10 +26,6 @@
 </script>
 
 <style scoped>
-  .add-new-inbox {
-
-  }
-
   .inbox-list {
     margin-top: 50px;
   }

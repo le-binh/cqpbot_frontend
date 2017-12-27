@@ -32,7 +32,7 @@ const createNotUnderstandQuestion = async (pageId, question, answers) => {
 const updateQuestion = async (id, question, answers) => {
   try {
     const url = QUESTION_ENDPOINT.replace('id', id)
-    const requestData = { question, answers }
+    const requestData = { question, answers, correct: true }
     const response = await axiosClient.put(url, requestData,
       {
         headers: {

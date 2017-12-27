@@ -29,7 +29,7 @@
 
   export default {
     name: 'InboxList',
-    props: ['inboxes'],
+    props: ['inboxes', 'pageId'],
     components: { Pagination },
     computed: {
       ...mapGetters([
@@ -51,13 +51,13 @@
         'getInboxes'
       ]),
       loadFirstPage () {
-        this.getInboxes({ page: 0 })
+        this.getInboxes({ pageId: this.pageId, page: 0 })
       },
       loadNextPage () {
-        this.getInboxes({ page: this.currentInboxesPage + 1 })
+        this.getInboxes({ pageId: this.pageId, page: this.currentInboxesPage + 1 })
       },
       loadPreviousPage () {
-        this.getInboxes({ page: this.currentInboxesPage - 1 })
+        this.getInboxes({ pageId: this.pageId, page: this.currentInboxesPage - 1 })
       }
     }
   }

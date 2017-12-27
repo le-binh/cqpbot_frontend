@@ -2,7 +2,7 @@
   <div class="wrapper" v-loading.fullscreen.lock="loading">
     <el-tabs type="card" @tab-click="handleTabClicked">
       <el-tab-pane label="Inbox">
-        <TrainingInbox :inboxes="inboxes" @saveNewInbox="handleSaveNewInbox"/>
+        <TrainingInbox :pageId="id" :inboxes="inboxes" @saveNewInbox="handleSaveNewInbox"/>
       </el-tab-pane>
       <el-tab-pane label="Không hiểu">
         <TrainingNotUnderstand :pageId="id"/>
