@@ -4,11 +4,11 @@ import store from '../store'
 
 const getCustomers = async (pageId) => {
   try {
-    const url = PAGE_MEMBERS_ENDPOINT.replace('pageId', pageId)
-    const response = await axiosClient.get(url, {
+    const response = await axiosClient.get(PAGE_MEMBERS_ENDPOINT, {
       headers: {
         Authorization: `Bearer ${store.state.auth.shopToken}`
-      }
+      },
+      params: { pageId }
     })
     const responseData = response.data
     if (responseData.meta.success) {

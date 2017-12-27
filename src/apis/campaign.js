@@ -5,11 +5,11 @@ import common from './common'
 
 const getPageMessages = async (pageId) => {
   try {
-    const url = PAGE_MESSAGES_ENDPOINT.replace('pageId', pageId)
-    const response = await axiosClient.get(url, {
+    const response = await axiosClient.get(PAGE_MESSAGES_ENDPOINT, {
       headers: {
         Authorization: `Bearer ${store.state.auth.shopToken}`
-      }
+      },
+      params: { pageId }
     })
     const responseData = response.data
     if (responseData.meta.success) {

@@ -8,7 +8,7 @@
         <TrainingNotUnderstand :pageId="id"/>
       </el-tab-pane>
       <el-tab-pane label="Nghi ngờ Misena trả lời sai">
-        <TrainingConfusing />
+        <TrainingConfusing :pageId="id"/>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -58,7 +58,7 @@
       }
     },
     created () {
-      this.getInboxes({ page: 0 })
+      this.getInboxes({ pageId: this.id, page: 0 })
     }
   }
 </script>

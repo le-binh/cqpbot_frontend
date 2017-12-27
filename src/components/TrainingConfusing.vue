@@ -64,6 +64,7 @@
   import Pagination from '@/components/Pagination'
 
   export default {
+    props: ['pageId'],
     components: { Pagination },
     data () {
       return {
@@ -143,7 +144,7 @@
       }
     },
     created () {
-      this.getConfusingQuestions({ page: 0 })
+      this.getConfusingQuestions({ pageId: this.pageId, page: 0 })
     }
   }
 </script>

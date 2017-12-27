@@ -7,15 +7,15 @@ import common from './common'
 
 const getNewArrivals = async (pageId) => {
   try {
-    const url = PAGE_PRODUCTS_ENDPOINT.replace('pageId', pageId)
     const response = await axiosClient.get(
-      url,
+      PAGE_PRODUCTS_ENDPOINT,
       {
         headers: {
           Authorization: `Bearer ${store.state.auth.shopToken}`
         },
         params: {
-          type: 'newArrival'
+          type: 'newArrival',
+          pageId
         }
       }
     )

@@ -50,9 +50,9 @@ const actions = {
     }
     return false
   },
-  async getInboxes ({ commit }, { page }) {
+  async getInboxes ({ commit }, { pageId, page }) {
     commit(START_LOADING_INBOXES)
-    const response = await trainingApi.getInboxes({ page })
+    const response = await trainingApi.getInboxes({ pageId, page })
     commit(FINISH_LOADING_INBOXES)
     if (response) {
       const { isEnd, inboxes } = response
@@ -66,9 +66,9 @@ const actions = {
     commit(FINISH_LOADING_NOT_UNDERSTAND_QUESTIONS)
     commit(RECEIVE_NOT_UNDERSTAND_QUESTIONS, questions)
   },
-  async getConfusingQuestions ({ commit }, { page }) {
+  async getConfusingQuestions ({ commit }, { pageId, page }) {
     commit(START_LOADING_CONFUSING_QUESTIONS)
-    const response = await trainingApi.getConfusingQuestions({ page })
+    const response = await trainingApi.getConfusingQuestions({ pageId, page })
     commit(FINISH_LOADING_CONFUSING_QUESTIONS)
     if (response) {
       const { isEnd, questions } = response

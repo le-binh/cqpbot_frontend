@@ -50,7 +50,7 @@ const updateQuestion = async (id, question, answers) => {
   }
 }
 
-const getInboxes = async ({ page }) => {
+const getInboxes = async ({ pageId, page }) => {
   try {
     const response = await axiosClient.get(
       QUESTIONS_ENDPOINT,
@@ -60,7 +60,8 @@ const getInboxes = async ({ page }) => {
         },
         params: {
           type: 'guess',
-          page
+          page,
+          pageId
         }
       }
     )
@@ -77,7 +78,7 @@ const getNotUnderstandQuestions = async (pageId) => {
   return page.notUnderstandQuestions
 }
 
-const getConfusingQuestions = async ({ page }) => {
+const getConfusingQuestions = async ({ pageId, page }) => {
   try {
     const response = await axiosClient.get(
       CONFUSING_QUESTIONS_ENDPOINT,
@@ -86,7 +87,8 @@ const getConfusingQuestions = async ({ page }) => {
           Authorization: `Bearer ${store.state.auth.shopToken}`
         },
         params: {
-          page
+          page,
+          pageId
         }
       }
     )

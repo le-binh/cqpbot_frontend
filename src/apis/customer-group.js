@@ -1,10 +1,10 @@
 import axiosClient from './axios-client'
-import { CUSTOMER_GROUPS_ENDPOINT } from './endpoints'
+import { CUSTOMER_GROUPS_ENDPOINT, PAGE_GROUPS_ENDPOINT } from './endpoints'
 import store from '../store'
 
 const getCustomerGroups = async (pageId) => {
   try {
-    const response = await axiosClient.get(CUSTOMER_GROUPS_ENDPOINT, {
+    const response = await axiosClient.get(PAGE_GROUPS_ENDPOINT, {
       headers: {
         Authorization: `Bearer ${store.state.auth.shopToken}`
       },
@@ -12,7 +12,7 @@ const getCustomerGroups = async (pageId) => {
     })
     const responseData = response.data
     if (responseData.meta.success) {
-      return responseData.data
+      return responseData.data.data
     } else {
       return []
     }
