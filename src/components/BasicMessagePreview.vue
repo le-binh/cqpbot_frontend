@@ -29,7 +29,7 @@
     border-radius: 16px;
     box-shadow: none;
     display: inline-block;
-    width: 350px;
+    width: 320px;
   }
 
   .button {

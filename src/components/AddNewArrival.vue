@@ -79,7 +79,7 @@
     data () {
       return {
         formData: {
-          buttons: [],
+          buttons: [{ key: Date.now(), title: '', link: '' }],
           title: '',
           subTitle: '',
           dialogImageUrl: '',
@@ -199,6 +199,18 @@
   }
 
   .upload {
+    height: 148px;
+  }
+</style>
+
+<style>
+  .el-upload--picture-card {
+    width: 296px;
+    height: 148px;
+  }
+
+  .el-upload-list--picture-card .el-upload-list__item {
+    width: 296px;
     height: 148px;
   }
 </style>
