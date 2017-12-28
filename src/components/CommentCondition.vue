@@ -3,9 +3,7 @@
     <el-form-item label="Số lần comment" prop="condition" class="item-inline">
       <el-select v-model="formData.condition" placeholder="Chọn điều kiện">
         <el-option label=">" value="$gt"></el-option>
-        <el-option label=">=" value="$gte"></el-option>
         <el-option label="<" value="$lt"></el-option>
-        <el-option label="<=" value="$lte"></el-option>
         <el-option label="=" value="$eq"></el-option>
       </el-select>
     </el-form-item>
