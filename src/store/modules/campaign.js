@@ -1,4 +1,6 @@
-import { FINISH_LOADING_PAGE_MESSAGES, RECEIVE_ALL_PAGE_MESSAGES, START_LOADING_PAGE_MESSAGES } from '../mutation-types'
+import {
+  FINISH_LOADING_PAGE_MESSAGES, RECEIVE_ALL_PAGE_MESSAGES, START_LOADING_PAGE_MESSAGES
+} from '../mutation-types'
 import campaignApi from '../../apis/campaign'
 
 const state = {
@@ -8,6 +10,7 @@ const state = {
 
 const getters = {
   messages: state => state.messages.map(message => ({
+    id: message._id,
     name: message.title,
     sent: message.statistic.sent,
     read: message.statistic.read,
@@ -22,6 +25,10 @@ const actions = {
     commit(FINISH_LOADING_PAGE_MESSAGES)
     commit(RECEIVE_ALL_PAGE_MESSAGES, { messages: messages })
     return messages
+  },
+  async sendMessage ({ commit }, id) {
+    const success = await campaignApi.sendMessage(id)
+    return success
   }
 }
 

@@ -1,5 +1,7 @@
 import axiosClient from './axios-client'
-import { PAGE_MESSAGES_ENDPOINT, MESSAGE_ENDPOINT, MESSAGE_PHOTO_ENDPOINT } from './endpoints'
+import {
+  PAGE_MESSAGES_ENDPOINT, MESSAGE_ENDPOINT, MESSAGE_PHOTO_ENDPOINT, SEND_MESSAGE_ENDPOINT
+} from './endpoints'
 import store from '../store'
 import common from './common'
 
@@ -46,8 +48,28 @@ const updateMessagePhoto = async (id, file) => {
   return response
 }
 
+const sendMessage = async (id) => {
+  try {
+    const url = SEND_MESSAGE_ENDPOINT.replace('id', id)
+    const response = await axiosClient.put(url, {}, {
+      headers: {
+        Authorization: `Bearer ${store.state.auth.shopToken}`
+      }
+    })
+    const responseData = response.data
+    if (responseData.meta.success) {
+      return true
+    } else {
+      return false
+    }
+  } catch (e) {
+    return false
+  }
+}
+
 export default {
   getPageMessages,
   createMessage,
-  updateMessagePhoto
+  updateMessagePhoto,
+  sendMessage
 }

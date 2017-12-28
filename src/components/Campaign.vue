@@ -18,7 +18,13 @@
         label="Hành động"
         width="120">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="handleSendMessage(scope.$index, scope.row)">Gửi tin nhắn</el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="handleSendMessage(scope.$index, scope.row)"
+          >
+            Gửi tin nhắn
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -41,13 +47,19 @@
     },
     methods: {
       ...mapActions([
-        'getPageMessages'
+        'getPageMessages',
+        'sendMessage'
       ]),
       addNewMessage: function () {
         this.$router.push({ name: 'AddNewMessage' })
       },
-      handleSendMessage (index, row) {
-        console.log('Send message', index, row)
+      async handleSendMessage (index, row) {
+        const success = await this.sendMessage(row.id)
+        if (success) {
+          this.$message({message: 'Gửi tin nhắn thành công', type: 'success', showClose: true})
+        } else {
+          this.$message({message: 'Có lỗi xảy ra, vui lòng thử lại', type: 'error', showClose: true})
+        }
       }
     },
     created () {
