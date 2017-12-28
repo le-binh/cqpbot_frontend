@@ -100,4 +100,8 @@
     width: 250px;
     white-space: nowrap;
   }
+
+  .card:hover {
+    background-color: rgba(238, 241, 246, 0.5);
+  }
 </style>
