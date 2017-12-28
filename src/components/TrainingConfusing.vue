@@ -43,7 +43,7 @@
           <p v-for="(answer, index) in scope.row.confusing.answers">{{ answer }}</p>
         </template>
       </el-table-column>
-      <el-table-column label="Hành động" width="200">
+      <el-table-column label="Hành động" width="210">
         <template slot-scope="scope">
           <el-button type="text" size="small">Đã trả lời đúng</el-button>
           <el-button type="text" size="small" @click="handleAnswer(scope.$index, scope.row)">Dạy lại Misena</el-button>
