@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper" v-loading.fullscreen.lock="loading">
+    <p class="group-overview">Có {{ groupOverview }} người thoả điều kiện</p>
     <el-form
       label-position="left"
       :model="formData"
@@ -75,7 +76,8 @@
     },
     computed: {
       ...mapGetters([
-        'displayedCustomerGroupConditions'
+        'displayedCustomerGroupConditions',
+        'groupOverview'
       ]),
       ...mapState({
         loading: state => state.addNewGroup.loading
@@ -89,14 +91,14 @@
         'clearAllConditions'
       ]),
       handleClose (conditionKey) {
-        this.deleteCondition(conditionKey)
+        this.deleteCondition({ pageId: this.id, conditionKey })
       },
       handleCommand (command) {
         this.currentCondition = this.conditions.find(condition => condition.key === command)
       },
       updateCondition ({ key, value }) {
         this.currentCondition = undefined
-        this.addNewCondition({key, value})
+        this.addNewCondition({pageId: this.id, key, value})
       },
       discardCondition () {
         this.currentCondition = undefined
@@ -169,5 +171,10 @@
 
   .formStyle {
     width: 500px;
+  }
+
+  .group-overview {
+    margin-bottom: 32px;
+    color: #3a8ee6;
   }
 </style>

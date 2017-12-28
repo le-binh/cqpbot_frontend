@@ -1,5 +1,5 @@
 import axiosClient from './axios-client'
-import { CUSTOMER_GROUPS_ENDPOINT, PAGE_GROUPS_ENDPOINT } from './endpoints'
+import { CUSTOMER_GROUPS_ENDPOINT, PAGE_GROUPS_ENDPOINT, CUSTOMER_GROUPS_OVERVIEW_ENDPOINT } from './endpoints'
 import store from '../store'
 
 const getCustomerGroups = async (pageId) => {
@@ -39,7 +39,26 @@ const createCustomerGroup = async (pageId, title, conditions) => {
   }
 }
 
+const groupOverview = async (pageId, conditions) => {
+  try {
+    const response = await axiosClient.post(CUSTOMER_GROUPS_OVERVIEW_ENDPOINT, { pageId, conditions }, {
+      headers: {
+        Authorization: `Bearer ${store.state.auth.shopToken}`
+      }
+    })
+    const responseData = response.data
+    if (responseData.meta.success) {
+      return responseData.data
+    } else {
+      return 0
+    }
+  } catch (e) {
+    return 0
+  }
+}
+
 export default {
   getCustomerGroups,
-  createCustomerGroup
+  createCustomerGroup,
+  groupOverview
 }

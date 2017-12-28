@@ -1,6 +1,6 @@
 import {
   ADD_NEW_GROUP_CONDITION, DELETE_GROUP_CONDITION, START_CREATING_CUSTOMER_GROUP,
-  FINISH_CREATING_CUSTOMER_GROUP, CLEAR_ALL_CONDITIONS
+  FINISH_CREATING_CUSTOMER_GROUP, CLEAR_ALL_CONDITIONS, UPDATE_GROUP_OVERVIEW
 } from '../mutation-types'
 import { genderDict, comparisonDict } from '../constants'
 import customerGroupsApi from '../../apis/customer-group'
@@ -9,7 +9,8 @@ const state = {
   pageId: '',
   title: '',
   conditions: {},
-  loading: false
+  loading: false,
+  overview: 0
 }
 
 const normalizeConditions = conditions => {
@@ -35,15 +36,18 @@ const normalizeConditions = conditions => {
 }
 
 const getters = {
-  displayedCustomerGroupConditions: state => normalizeConditions(state.conditions)
+  displayedCustomerGroupConditions: state => normalizeConditions(state.conditions),
+  groupOverview: state => state.overview
 }
 
 const actions = {
-  addNewCondition ({ commit }, { key, value }) {
+  addNewCondition ({ commit, dispatch }, { pageId, key, value }) {
     commit(ADD_NEW_GROUP_CONDITION, { key, value })
+    dispatch('updateGroupOverview', { pageId })
   },
-  deleteCondition ({ commit }, conditionKey) {
+  deleteCondition ({ commit, dispatch }, { pageId, conditionKey }) {
     commit(DELETE_GROUP_CONDITION, conditionKey)
+    dispatch('updateGroupOverview', { pageId })
   },
   async createCustomerGroup ({ commit }, { pageId, title }) {
     commit(START_CREATING_CUSTOMER_GROUP)
@@ -53,6 +57,10 @@ const actions = {
   },
   clearAllConditions ({ commit }) {
     commit(CLEAR_ALL_CONDITIONS)
+  },
+  async updateGroupOverview ({ commit }, { pageId }) {
+    const overview = await customerGroupsApi.groupOverview(pageId, state.conditions)
+    commit(UPDATE_GROUP_OVERVIEW, overview)
   }
 }
 
@@ -73,6 +81,9 @@ const mutations = {
   },
   [CLEAR_ALL_CONDITIONS] (state) {
     state.conditions = {}
+  },
+  [UPDATE_GROUP_OVERVIEW] (state, overview) {
+    state.overview = overview
   }
 }
 
